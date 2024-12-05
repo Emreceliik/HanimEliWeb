@@ -3,35 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Yap</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Giriş yap</title>
+ <link rel="stylesheet" href="style.css"> 
+
+    <style>
+        /* Genel Stiller */
+       
+.main2 {
+    display: flex; /* Flexbox kullanarak içerik ortalanır */
+    justify-content: center; /* İçeriği yatayda ortala */
+    align-items: center; /* İçeriği dikeyde ortala */
+    width: 100%; /* Ana genişlik */
+    height: 100%; /* Ana yüksekliği tam ekran yap */
+}
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            /*align-items: center; */
+        }
+
+        /* Navbar Stilleri */    
+  
+  .navbar .logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff; /* Beyaz yazı */
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 15px; /* Bağlantılar arasında boşluk */
+    margin: 20px; /* Margin sıfırlandı */
+    padding: 0; /* Padding sıfırlandı */
+  }
+  
+  .nav-links li a {
+    text-decoration: none;
+    color: #fff; /* Beyaz yazı */
+    font-size: 1.25rem; /* Büyük yazı */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Geçiş efektleri */
+  }
+  
+  .nav-links li a:hover {
+    color: #ffcc00; /* Sarıya dönüşüm */
+     /* Daha koyu mor arka plan */
+    border-radius: 5px; /* Köşeler yuvarlatıldı */
+  }
+  
+  main {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* İçeriği dikeyde ortalama */
+    align-items: center; /* İçeriği yatayda ortalama */
+}
+
+        main h1 {
+            font-size: 2rem;
+            color: #6200ea;
+            margin-bottom: 20px;
+        }
+
+        main form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main label {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        main input {
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        main input:focus {
+            border-color: #6200ea;
+            outline: none;
+        }
+
+        main button {
+            background-color: #6200ea;
+            color: white;
+            font-size: 1rem;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        main button:hover {
+            background-color: #3700b3;
+        }
+
+        main p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        main p a {
+            text-decoration: none;
+            color: #6200ea;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        main p a:hover {
+            color: #3700b3;
+        }
+
+        
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="logo">Kadın Emeği</div>
             <ul class="nav-links">
-              <li><a href="index.html">Anasayfa</a></li>
-              <li><a href="ilan-ver.html">İlan Ver</a></li>
-              <li><a href="#sohbet">Sohbet</a></li>
-              <li><a href="profile.html">Profile</a></li>
-              <li><a href="login.html">Giriş Yap</a></li>
-              <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="index.html">Anasayfa</a></li>
+                <li><a href="ilan-ver.html">İlan Ver</a></li>
+                <li><a href="#sohbet">Sohbet</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Giriş Yap</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
             </ul>
-          </nav>
+        </nav>
     </header>
-    <main>
+    <div class="main2">
+    <main >
+        <h1>Kullanıcı Girişi</h1>
         <form id="loginForm">
             <label for="nickname">Kullanıcı Adı:</label>
-            <input type="text" id="nickname" name="nickname" required>
+            <input type="text" id="nickname" name="nickname" placeholder="Kullanıcı adınızı girin" required>
             
             <label for="password">Şifre:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" placeholder="Şifrenizi girin" required>
             
-            <button type="submit" class="primary">Giriş Yap</button>
+            <button type="submit">Giriş Yap</button>
             <p>Hesabınız yok mu? <a href="register.html">Kayıt Ol</a></p>
         </form>
     </main>
-    <script src="auth.js"></script>
+</div>
 </body>
 </html>
