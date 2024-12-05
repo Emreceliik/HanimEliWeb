@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Kadın Emeği</div>
+            <ul class="nav-links">
+              <li><a href="index.html">Anasayfa</a></li>
+              <li><a href="ilan-ver.html">İlan Ver</a></li>
+              <li><a href="#sohbet">Sohbet</a></li>
+              <li><a href="profile.html">Profile</a></li>
+              <li><a href="login.html">Giriş Yap</a></li>
+              <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+          </nav>
+    </header>
+    <main>
+        <form id="loginForm">
+            <label for="nickname">Kullanıcı Adı:</label>
+            <input type="text" id="nickname" name="nickname" required>
+            
+            <label for="password">Şifre:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit" class="primary">Giriş Yap</button>
+            <p>Hesabınız yok mu? <a href="register.html">Kayıt Ol</a></p>
+        </form>
+    </main>
+    <script src="auth.js"></script>
+</body>
+</html>

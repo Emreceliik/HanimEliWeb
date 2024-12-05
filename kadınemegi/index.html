@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anasayfa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="checkAuth()">
+    <header>
+        <nav class="navbar">
+            <div class="logo">Kadın Emeği</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Anasayfa</a></li>
+                <li><a href="ilan-ver.html">İlan Ver</a></li>
+                <li><a href="#sohbet">Sohbet</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Giriş Yap</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="ilanlar" class="ilanlar-container">
+        </section>
+    </main>
+    <script>
+        const ilanlar = [
+            {
+                title: 'El İşi Bebek',
+                price: 150,
+                description: 'El yapımı oyuncak bebek.',
+                user: 'Ayşe',
+                image: 'https://via.placeholder.com/150'
+            },
+            {
+                title: 'Örgü Kazak',
+                price: 200,
+                description: 'Elde örülmüş kışlık kazak.',
+                user: 'Fatma',
+                image: 'https://via.placeholder.com/150'
+            }
+        ];
+
+        const ilanlarContainer = document.getElementById('ilanlar');
+        ilanlar.forEach((ilan, index) => {
+            ilanlarContainer.innerHTML += `
+                <div class="ilan-card">
+                    <img src="${ilan.image}" alt="${ilan.title}" class="ilan-image">
+                    <h3>${ilan.title} - ${ilan.price}₺</h3>
+                    <p>${ilan.description}</p>
+                    <button onclick="redirectTo('ilan-detay.html?id=${index}')">Detayları Gör</button>
+                </div>
+            `;
+        });
+
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>

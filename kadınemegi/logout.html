@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çıkış Yap</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Kadın Emeği</div>
+            <ul class="nav-links">
+              <li><a href="index.html">Anasayfa</a></li>
+              <li><a href="ilan-ver.html">İlan Ver</a></li>
+              <li><a href="#sohbet">Sohbet</a></li>
+              <li><a href="profile.html">Profile</a></li>
+              <li><a href="login.html">Giriş Yap</a></li>
+              <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+          </nav>
+    </header>
+    <main>
+        <p>Çıkış yapmak istediğinize emin misiniz?</p>
+        <button id="logoutYes" class="primary">Evet</button>
+        <button id="logoutNo" class="secondary">Hayır</button>
+    </main>
+    <script>
+        document.getElementById('logoutYes').addEventListener('click', function () {
+            localStorage.removeItem('isAuthenticated');
+            alert('Başarıyla çıkış yaptınız!');
+            redirectTo('login.html');
+        });
+
+        document.getElementById('logoutNo').addEventListener('click', function () {
+            redirectTo('index.html');
+        });
+    </script>
+</body>
+</html>

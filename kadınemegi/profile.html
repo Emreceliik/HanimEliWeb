@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="checkAuth()">
+    <header>
+        <nav class="navbar">
+            <div class="logo">Kadın Emeği</div>
+            <ul class="nav-links">
+              <li><a href="index.html">Anasayfa</a></li>
+              <li><a href="ilan-ver.html">İlan Ver</a></li>
+              <li><a href="#sohbet">Sohbet</a></li>
+              <li><a href="profile.html">Profile</a></li>
+              <li><a href="login.html">Giriş Yap</a></li>
+              <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+          </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Kullanıcı Bilgilerim</h2>
+            <p>Ad Soyad: <span id="userName">Ayşe Yılmaz</span></p>
+            <p>Nickname: <span id="userNickname">ayse123</span></p>
+            <p>Cinsiyet: <span id="userGender">Kadın</span></p>
+        </section>
+
+        <section>
+            <h2>Sertifikalar</h2>
+            <div id="certificates">
+                <!-- Sertifikalar dinamik olarak yüklenecek -->
+            </div>
+            <form id="certificateForm">
+                <input type="text" id="certTitle" placeholder="Sertifika Başlığı" required>
+                <input type="date" id="certDate" required>
+                <button type="submit" class="primary">Sertifika Ekle</button>
+            </form>
+        </section>
+    </main>
+    <script>
+        const certificates = [{ title: 'Girişimcilik Sertifikası', date: '2024-01-15' }];
+
+        const certificateContainer = document.getElementById('certificates');
+        certificates.forEach(cert => {
+            certificateContainer.innerHTML += `
+                <div>
+                    <h4>${cert.title}</h4>
+                    <p>${cert.date}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById('certificateForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const certTitle = document.getElementById('certTitle').value;
+            const certDate = document.getElementById('certDate').value;
+            certificates.push({ title: certTitle, date: certDate });
+            certificateContainer.innerHTML += `
+                <div>
+                    <h4>${certTitle}</h4>
+                    <p>${certDate}</p>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

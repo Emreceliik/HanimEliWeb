@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İlan Ver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="checkAuth()">
+    <header>
+        <nav class="navbar">
+            <div class="logo">Kadın Emeği</div>
+            <ul class="nav-links">
+              <li><a href="index.html">Anasayfa</a></li>
+              <li><a href="ilan-ver.html">İlan Ver</a></li>
+              <li><a href="#sohbet">Sohbet</a></li>
+              <li><a href="profile.html">Profile</a></li>
+              <li><a href="login.html">Giriş Yap</a></li>
+              <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+          </nav>
+    </header>
+    <main>
+        <form id="ilanForm" enctype="multipart/form-data">
+            <label for="title">Başlık:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="description">Açıklama:</label>
+            <textarea id="description" name="description" required></textarea>
+
+            <label for="image">Görsel:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+
+            <label for="price">Fiyat:</label>
+            <input type="number" id="price" name="price" required>
+
+            <label for="location">Konum:</label>
+            <input type="text" id="location" name="location" required>
+
+            <button type="submit" class="primary">İlan Ver</button>
+        </form>
+    </main>
+    <script src="js/ilan.js"></script>
+</body>
+</html>
