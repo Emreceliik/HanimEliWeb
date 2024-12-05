@@ -3,67 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Profile</title>
+    <style>
+        /* Genel Stil */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #db7bec;
+            padding: 10px 20px;
+        }
+
+        .navbar .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 20px ;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #ffcc00;
+        }
+
+        /* Profil Bilgileri */
+        .profile-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-info img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #6200ea;
+            margin-right: 20px;
+        }
+
+        .profile-info h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #6200ea;
+        }
+
+        .stars {
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+        }
+
+        .stars i {
+            font-size: 1.5rem;
+            color: #ffd700; /* Altın renk */
+        }
+
+        .stars i.inactive {
+            color: #ccc;
+        }
+
+        .accordion-section {
+            margin: 20px auto;
+            max-width: 600px; /* Genişlik sınırı */
+            width: 100%; /* Tarayıcı genişliğine uyum */
+        }
+        
+        .accordion {
+            background-color: #fff;
+            color: #333;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            min-height: 60px; /* Minimum yükseklik */
+            width: 100%; /* Genişlik sabit */
+            box-sizing: border-box; /* İç kenarlıklar hesaba katılır */
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background-color: #fff;
+            padding: 0 20px;
+            border-left: 3px solid #6200ea;
+            border-radius: 0 0 5px 5px;
+            width: 100%; /* İçeriğin genişliği sabit */
+            box-sizing: border-box; /* İç kenarlıklar hesaba katılır */
+        }
+        
+        .accordion-content.open {
+            padding: 15px 20px;
+        }
+        
+        .accordion-content div {
+            margin: 10px 0;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        
+        .accordion.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+        .accordion-content a {
+            color: #007BFF;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .accordion-content a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+        
+        
+
+        form input,
+        form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        form button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #5300c9;
+        }
+    </style>
 </head>
-<body onload="checkAuth()">
+<body>
     <header>
         <nav class="navbar">
             <div class="logo">Kadın Emeği</div>
             <ul class="nav-links">
-              <li><a href="index.html">Anasayfa</a></li>
-              <li><a href="ilan-ver.html">İlan Ver</a></li>
-              <li><a href="#sohbet">Sohbet</a></li>
-              <li><a href="profile.html">Profile</a></li>
-              <li><a href="login.html">Giriş Yap</a></li>
-              <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="index.html">Anasayfa</a></li>
+                <li><a href="ilan-ver.html">İlan Ver</a></li>
+                <li><a href="#sohbet">Sohbet</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Giriş Yap</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
             </ul>
-          </nav>
+        </nav>
     </header>
+
     <main>
-        <section>
-            <h2>Kullanıcı Bilgilerim</h2>
-            <p>Ad Soyad: <span id="userName">Ayşe Yılmaz</span></p>
-            <p>Nickname: <span id="userNickname">ayse123</span></p>
-            <p>Cinsiyet: <span id="userGender">Kadın</span></p>
-        </section>
+        <div class="profile-container">
+            <section class="profile-info">
+                <img src="profile.jpg" alt="Profil Fotoğrafı">
+                <div>
+                    <h3>@ayse123</h3>
+                    <div class="stars">
+                        <i class="active">&#9733;</i>
+                        <i class="active">&#9733;</i>
+                        <i class="active">&#9733;</i>
+                        <i class="active">&#9733;</i>
+                        <i class="inactive">&#9733;</i>
+                    </div>
+                    <p>4/5</p>
+                </div>
+            </section>
 
-        <section>
-            <h2>Sertifikalar</h2>
-            <div id="certificates">
-                <!-- Sertifikalar dinamik olarak yüklenecek -->
-            </div>
-            <form id="certificateForm">
-                <input type="text" id="certTitle" placeholder="Sertifika Başlığı" required>
-                <input type="date" id="certDate" required>
-                <button type="submit" class="primary">Sertifika Ekle</button>
-            </form>
-        </section>
+            <section class="accordion-section">
+                <div class="accordion">
+                    <span class="toggle-icon">^</span>
+                    Sertifikalar
+                </div>
+                <div class="accordion-content">
+                    <div><h5>Girişimcilik Sertifikası - 2024-01-15</h5></div>
+                    <div><h5>İngilizce Sertifikası - 2023-11-20</h5></div>
+                    <form>
+                        <input type="text" id="certTitle" placeholder="Sertifika Başlığı" required>
+                        <input type="date" id="certDate" required>
+                        <button type="submit">Sertifika Ekle</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="accordion-section">
+                <div class="accordion">
+                    <span class="toggle-icon">^</span>
+                    İlanlarım
+                </div>
+                <div class="accordion-content">
+                    <div><h5>İlan Başlığı 1 - 2024-01-10</h5></div>
+                    <div><h5>İlan Başlığı 2 - 2023-12-15</h5></div>
+                    <div>
+                        <h5>
+                            <a href="ilan-ver.html" style="text-decoration: none; color: #007BFF;">İlan vermek için tıklayın</a>
+                        </h5>
+                    </div>
+                </div>
+                
+            </section>
+        </div>
     </main>
+
     <script>
-        const certificates = [{ title: 'Girişimcilik Sertifikası', date: '2024-01-15' }];
+        const accordions = document.querySelectorAll('.accordion');
 
-        const certificateContainer = document.getElementById('certificates');
-        certificates.forEach(cert => {
-            certificateContainer.innerHTML += `
-                <div>
-                    <h4>${cert.title}</h4>
-                    <p>${cert.date}</p>
-                </div>
-            `;
-        });
+        accordions.forEach(accordion => {
+            accordion.addEventListener('click', function () {
+                const content = this.nextElementSibling;
 
-        document.getElementById('certificateForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const certTitle = document.getElementById('certTitle').value;
-            const certDate = document.getElementById('certDate').value;
-            certificates.push({ title: certTitle, date: certDate });
-            certificateContainer.innerHTML += `
-                <div>
-                    <h4>${certTitle}</h4>
-                    <p>${certDate}</p>
-                </div>
-            `;
+                // Açılıp kapanma animasyonu
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    this.classList.remove('active');
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    this.classList.add('active');
+                }
+            });
         });
     </script>
 </body>

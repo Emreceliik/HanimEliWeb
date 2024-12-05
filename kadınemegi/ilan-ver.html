@@ -4,29 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İlan Ver</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Genel Ayarlar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #db7bec;
+            padding: 10px 20px;
+        }
+
+        .navbar .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links li a:hover {
+            color: #ffcc00;
+        }
+
+        /* Form */
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+            padding: 20px;
+        }
+
+        #ilanForm {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        #ilanForm label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #6200ea;
+        }
+
+        #ilanForm input,
+        #ilanForm textarea,
+        #ilanForm select,
+        #ilanForm button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        #ilanForm input:focus,
+        #ilanForm textarea:focus,
+        #ilanForm select:focus {
+            outline: none;
+            border-color: #6200ea;
+        }
+
+        #ilanForm textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .primary {
+            background-color: #6200ea;
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body onload="checkAuth()">
     <header>
         <nav class="navbar">
             <div class="logo">Kadın Emeği</div>
             <ul class="nav-links">
-              <li><a href="index.html">Anasayfa</a></li>
-              <li><a href="ilan-ver.html">İlan Ver</a></li>
-              <li><a href="#sohbet">Sohbet</a></li>
-              <li><a href="profile.html">Profile</a></li>
-              <li><a href="login.html">Giriş Yap</a></li>
-              <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="index.html">Anasayfa</a></li>
+                <li><a href="ilan-ver.html">İlan Ver</a></li>
+                <li><a href="#sohbet">Sohbet</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="login.html">Giriş Yap</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
             </ul>
-          </nav>
+        </nav>
     </header>
     <main>
+        
         <form id="ilanForm" enctype="multipart/form-data">
+            <h1>İlan Verme Formu </h1>
             <label for="title">Başlık:</label>
             <input type="text" id="title" name="title" required>
 
             <label for="description">Açıklama:</label>
             <textarea id="description" name="description" required></textarea>
+
+            <label for="category">Kategori:</label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Kategori Seçin</option>
+                <option value="kategori1">Kategori1</option>
+                <option value="kategori2">Kategori2</option>
+                <option value="kategori3">Kategori3</option>
+            </select>
 
             <label for="image">Görsel:</label>
             <input type="file" id="image" name="image" accept="image/*" required>
