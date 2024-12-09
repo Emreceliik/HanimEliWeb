@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Profil</title>
     <style>
         /* Genel Stil */
         body {
@@ -32,7 +33,7 @@
             list-style: none;
             display: flex;
             gap: 15px;
-            margin: 20px ;
+            margin: 20px;
             padding: 0;
         }
 
@@ -87,7 +88,8 @@
 
         .stars i {
             font-size: 1.5rem;
-            color: #ffd700; /* Altın renk */
+            color: #ffd700;
+            /* Altın renk */
         }
 
         .stars i.inactive {
@@ -96,10 +98,10 @@
 
         .accordion-section {
             margin: 20px auto;
-            max-width: 600px; /* Genişlik sınırı */
-            width: 100%; /* Tarayıcı genişliğine uyum */
+            max-width: 600px;
+            width: 100%;
         }
-        
+
         .accordion {
             background-color: #fff;
             color: #333;
@@ -112,11 +114,11 @@
             gap: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            min-height: 60px; /* Minimum yükseklik */
-            width: 100%; /* Genişlik sabit */
-            box-sizing: border-box; /* İç kenarlıklar hesaba katılır */
+            min-height: 60px;
+            width: 100%;
+            box-sizing: border-box;
         }
-        
+
         .accordion-content {
             max-height: 0;
             overflow: hidden;
@@ -125,35 +127,34 @@
             padding: 0 20px;
             border-left: 3px solid #6200ea;
             border-radius: 0 0 5px 5px;
-            width: 100%; /* İçeriğin genişliği sabit */
-            box-sizing: border-box; /* İç kenarlıklar hesaba katılır */
+            width: 100%;
+            box-sizing: border-box;
         }
-        
+
         .accordion-content.open {
             padding: 15px 20px;
         }
-        
+
         .accordion-content div {
             margin: 10px 0;
             font-size: 0.95rem;
             color: #555;
         }
-        
+
         .accordion.active .toggle-icon {
             transform: rotate(180deg);
         }
+
         .accordion-content a {
             color: #007BFF;
             text-decoration: none;
             transition: color 0.3s ease;
         }
-        
+
         .accordion-content a:hover {
             color: #0056b3;
             text-decoration: underline;
         }
-        
-        
 
         form input,
         form button {
@@ -178,6 +179,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav class="navbar">
@@ -192,13 +194,14 @@
             </ul>
         </nav>
     </header>
-
     <main>
         <div class="profile-container">
             <section class="profile-info">
                 <img src="profile.jpg" alt="Profil Fotoğrafı">
                 <div>
-                    <h3>@ayse123</h3>
+                    <h3 id="username"></h3> <!-- Kullanıcı adı dinamik olarak buraya gelecek -->
+                    <p id="fullName"></p> <!-- Kullanıcı adı ve soyadı -->
+                    <p id="gender"></p> <!-- Kullanıcı cinsiyeti -->
                     <div class="stars">
                         <i class="active">&#9733;</i>
                         <i class="active">&#9733;</i>
@@ -209,15 +212,18 @@
                     <p>4/5</p>
                 </div>
             </section>
-
             <section class="accordion-section">
                 <div class="accordion">
                     <span class="toggle-icon">^</span>
                     Sertifikalar
                 </div>
                 <div class="accordion-content">
-                    <div><h5>Girişimcilik Sertifikası - 2024-01-15</h5></div>
-                    <div><h5>İngilizce Sertifikası - 2023-11-20</h5></div>
+                    <div>
+                        <h5>Girişimcilik Sertifikası - 2024-01-15</h5>
+                    </div>
+                    <div>
+                        <h5>İngilizce Sertifikası - 2023-11-20</h5>
+                    </div>
                     <form>
                         <input type="text" id="certTitle" placeholder="Sertifika Başlığı" required>
                         <input type="date" id="certDate" required>
@@ -225,43 +231,77 @@
                     </form>
                 </div>
             </section>
-
             <section class="accordion-section">
                 <div class="accordion">
                     <span class="toggle-icon">^</span>
                     İlanlarım
                 </div>
                 <div class="accordion-content">
-                    <div><h5>İlan Başlığı 1 - 2024-01-10</h5></div>
-                    <div><h5>İlan Başlığı 2 - 2023-12-15</h5></div>
+                    <div>
+                        <h5>İlan Başlığı 1 - 2024-01-10</h5>
+                    </div>
+                    <div>
+                        <h5>İlan Başlığı 2 - 2023-12-15</h5>
+                    </div>
                     <div>
                         <h5>
-                            <a href="ilan-ver.html" style="text-decoration: none; color: #007BFF;">İlan vermek için tıklayın</a>
+                            <a href="ilan-ver.html" style="text-decoration: none; color: #007BFF;">İlan vermek için
+                                tıklayın</a>
                         </h5>
                     </div>
                 </div>
-                
             </section>
         </div>
-    </main>
-
-    <script>
-        const accordions = document.querySelectorAll('.accordion');
-
-        accordions.forEach(accordion => {
-            accordion.addEventListener('click', function () {
-                const content = this.nextElementSibling;
-
-                // Açılıp kapanma animasyonu
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                    this.classList.remove('active');
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    this.classList.add('active');
+        <script>
+            async function getUserProfile() {
+                const token = localStorage.getItem('token'); // Kullanıcı token'ını yerel depodan al
+                if (!token) {
+                    console.error('Token bulunamadı!');
+                    return;
                 }
+                try {
+                    const response = await fetch('/api/users/profile', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data); // API yanıtını konsola yazdır
+
+                        document.getElementById('username').textContent = `@${data.username}`;
+                        document.getElementById('fullName').textContent = data.fullName;
+                        document.getElementById('gender').textContent = data.gender;
+                    }
+                    else {
+                        console.error('Kullanıcı bilgileri alınamadı');
+                    }
+                } catch (error) {
+                    console.error('Bir hata oluştu:', error);
+                }
+            }
+
+            // Sayfa yüklendiğinde kullanıcı profilini getir
+            document.addEventListener('DOMContentLoaded', getUserProfile);
+        </script>
+        <script>
+            const accordions = document.querySelectorAll('.accordion');
+            accordions.forEach(accordion => {
+                accordion.addEventListener('click', function () {
+                    const content = this.nextElementSibling;
+                    // Açılıp kapanma animasyonu
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        this.classList.remove('active');
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        this.classList.add('active');
+                    }
+                });
             });
-        });
-    </script>
+        </script>
+    </main>
 </body>
+
 </html>
