@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,18 @@
     <style>
         /* Genel Stiller */
         .main2 {
-            display: flex; /* Flexbox kullanarak içerik ortalanır */
-            justify-content: center; /* İçeriği yatayda ortala */
-            align-items: center; /* İçeriği dikeyde ortala */
-            width: 100%; /* Ana genişlik */
-            height: 100%; /* Ana yüksekliği tam ekran yap */
+            display: flex;
+            /* Flexbox kullanarak içerik ortalanır */
+            justify-content: center;
+            /* İçeriği yatayda ortala */
+            align-items: center;
+            /* İçeriği dikeyde ortala */
+            width: 100%;
+            /* Ana genişlik */
+            height: 100%;
+            /* Ana yüksekliği tam ekran yap */
         }
-        
+
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
@@ -25,34 +31,43 @@
             /*align-items: center; */
         }
 
-        /* Navbar Stilleri */    
+        /* Navbar Stilleri */
         .navbar .logo {
             font-size: 2rem;
             font-weight: bold;
-            color: #fff; /* Beyaz yazı */
+            color: #fff;
+            /* Beyaz yazı */
         }
-        
+
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 15px; /* Bağlantılar arasında boşluk */
-            margin: 20px; /* Margin sıfırlandı */
-            padding: 0; /* Padding sıfırlandı */
+            gap: 15px;
+            /* Bağlantılar arasında boşluk */
+            margin: 20px;
+            /* Margin sıfırlandı */
+            padding: 0;
+            /* Padding sıfırlandı */
         }
-        
+
         .nav-links li a {
             text-decoration: none;
-            color: #fff; /* Beyaz yazı */
-            font-size: 1.25rem; /* Büyük yazı */
-            transition: color 0.3s ease, background-color 0.3s ease; /* Geçiş efektleri */
+            color: #fff;
+            /* Beyaz yazı */
+            font-size: 1.25rem;
+            /* Büyük yazı */
+            transition: color 0.3s ease, background-color 0.3s ease;
+            /* Geçiş efektleri */
         }
-        
+
         .nav-links li a:hover {
-            color: #ffcc00; /* Sarıya dönüşüm */
+            color: #ffcc00;
+            /* Sarıya dönüşüm */
             /* Daha koyu mor arka plan */
-            border-radius: 5px; /* Köşeler yuvarlatıldı */
+            border-radius: 5px;
+            /* Köşeler yuvarlatıldı */
         }
-        
+
         main {
             background: #ffffff;
             padding: 40px;
@@ -64,8 +79,10 @@
             margin-top: 30px;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* İçeriği dikeyde ortalama */
-            align-items: center; /* İçeriği yatayda ortalama */
+            justify-content: center;
+            /* İçeriği dikeyde ortalama */
+            align-items: center;
+            /* İçeriği yatayda ortalama */
         }
 
         main h1 {
@@ -86,7 +103,8 @@
             text-align: left;
         }
 
-        main input, main select {
+        main input,
+        main select {
             padding: 10px;
             font-size: 1rem;
             margin-bottom: 20px;
@@ -96,7 +114,8 @@
             width: 100%;
         }
 
-        main input:focus, main select:focus {
+        main input:focus,
+        main select:focus {
             border-color: #6200ea;
             outline: none;
         }
@@ -134,6 +153,7 @@
         }
     </style>
 </head>
+
 <body>
     <header>
         <nav class="navbar">
@@ -148,7 +168,7 @@
             </ul>
         </nav>
     </header>
-    
+
     <div class="main2">
         <main>
             <h1>Kayıt Ol</h1>
@@ -160,7 +180,8 @@
                 <input type="password" id="password" name="password" placeholder="Şifrenizi girin" required>
 
                 <label for="confirmPassword">Şifre Tekrar:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin" required>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin"
+                    required>
 
                 <label for="email">E-posta:</label>
                 <input type="email" id="email" name="email" placeholder="E-posta adresinizi girin" required>
@@ -175,7 +196,38 @@
                 <button type="submit">Kayıt Ol</button>
                 <p>Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a></p>
             </form>
+
+            <script>
+                document.getElementById('registerForm').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const nickname = document.getElementById('nickname').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    const email = document.getElementById('email').value;
+                    const gender = document.getElementById('gender').value;
+
+                    try {
+                        const response = await fetch('http://localhost:3000/register', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ nickname, password, confirmPassword, email, gender })
+                        });
+
+                        const data = await response.json();
+                        alert(data.message || data.error);
+                    } catch (error) {
+                        console.error('Hata:', error);
+                    }
+                });
+            </script>
+
+
+            <button type="submit">Kayıt Ol</button>
+            <p>Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a></p>
+            </form>
         </main>
     </div>
 </body>
+
 </html>
