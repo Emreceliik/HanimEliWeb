@@ -13,7 +13,6 @@ const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key'; // JWT sırrı
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 // Kullanıcı profili rotası
 app.get('/api/users/profile', async (req, res) => {
     const token = req.headers['authorization'];
@@ -24,32 +23,19 @@ app.get('/api/users/profile', async (req, res) => {
 
     try {
         const decoded = jwt.verify(token.split(' ')[1], SECRET_KEY); // Token'ı doğrula ve içeriğini al
-        if (!decoded.nickname) {
-            return res.status(401).json({ error: 'Geçersiz token.' });
-        }
-
         const query = `SELECT * FROM kullanicilar WHERE kullanici_id = $1;`;
         const result = await pool.query(query, [decoded.nickname]);
 
         if (result.rows.length > 0) {
-            const user = result.rows[0];
-
-            // Profil verisi dönerken username (kullanici_id) ekleniyor
-            res.status(200).json({
-                kullanici_id: user.kullanici_id, // Kullanıcı adı burada kullanici_id olarak dönüyor
-                fullName: user.full_name, // Full name (tam adı) ekleniyor
-                gender: user.cinsiyet, // Cinsiyet bilgisi ekleniyor
-                profilePic: user.profile_pic // Profil fotoğrafı ekleniyor
-            });
+            res.status(200).json(result.rows[0]);
         } else {
             res.status(404).json({ error: 'Kullanıcı bulunamadı.' });
         }
     } catch (err) {
         console.error(err.message);
-        res.status(500).json({ error: 'Token doğrulama hatası veya sunucu hatası!' });
+        res.status(500).json({ error: 'Sunucu hatası!' });
     }
 });
-
 
 // Kullanıcı kayıt rotası
 app.post('/register', async (req, res) => {

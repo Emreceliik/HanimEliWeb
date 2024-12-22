@@ -120,8 +120,7 @@
         </div>
         <div class="main-content">
             <main>
-                <section id="ilanlar" class="ilanlar-container">
-                </section>
+                <section id="ilanlar" class="ilanlar-container"></section>
             </main>
         </div>
     </div>
@@ -148,19 +147,35 @@
 
         const ilanlarContainer = document.getElementById('ilanlar');
 
-        function displayIlanlar(filteredIlanlar) {
-            ilanlarContainer.innerHTML = '';
-            filteredIlanlar.forEach((ilan, index) => {
+        async function getIlanlar() {
+            try {
+                const response = await fetch('/ilanlar');
+                const ilanlar = await response.json();
+                displayIlanlar(ilanlar);
+            } catch (error) {
+                console.error('İlanlar alınırken bir hata oluştu:', error);
+            }
+        }
+
+        function displayIlanlar(ilanlar) {
+            const ilanlarContainer = document.getElementById('ilanlar');
+            ilanlarContainer.innerHTML = ''; // İlk başta boşaltıyoruz
+
+            ilanlar.forEach(ilan => {
                 ilanlarContainer.innerHTML += `
-                    <div class="ilan-card">
-                        <img src="${ilan.image}" alt="${ilan.title}" class="ilan-image">
-                        <h3>${ilan.title} - ${ilan.price}₺</h3>
-                        <p>${ilan.description}</p>
-                        <button onclick="redirectTo('ilan-detay.html?id=${index}')">Detayları Gör</button>
-                    </div>
-                `;
+            <div class="ilan-card">
+                <img src="${ilan.image}" alt="${ilan.title}" class="ilan-image">
+                <h3>${ilan.title} - ${ilan.price}₺</h3>
+                <p>${ilan.description}</p>
+                <button onclick="redirectTo('ilan-detay.html?id=${ilan.id}')">Detayları Gör</button>
+            </div>
+        `;
             });
         }
+
+        // Sayfa yüklendiğinde ilanları çek
+        window.onload = getIlanlar;
+
 
         function applyFilters() {
             const selectedCategories = Array.from(document.querySelectorAll('input[name="kategori"]:checked')).map(input => input.value);
@@ -196,8 +211,6 @@
             window.location.href = url;
         }
     </script>
-    <script src="navbar.js"></script>
-
 </body>
 
 </html>
