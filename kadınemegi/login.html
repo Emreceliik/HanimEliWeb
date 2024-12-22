@@ -4,90 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Giriş yap</title>
- <link rel="stylesheet" href="style.css"> 
-
+    <link rel="stylesheet" href="style.css">
     <style>
         /* Genel Stiller */
-       
-.main2 {
-    display: flex; /* Flexbox kullanarak içerik ortalanır */
-    justify-content: center; /* İçeriği yatayda ortala */
-    align-items: center; /* İçeriği dikeyde ortala */
-    width: 100%; /* Ana genişlik */
-    height: 100%; /* Ana yüksekliği tam ekran yap */
-}
+        .main2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
-            /*align-items: center; */
         }
-
-        /* Navbar Stilleri */    
-  
-  .navbar .logo {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #fff; /* Beyaz yazı */
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 15px; /* Bağlantılar arasında boşluk */
-    margin: 20px; /* Margin sıfırlandı */
-    padding: 0; /* Padding sıfırlandı */
-  }
-  
-  .nav-links li a {
-    text-decoration: none;
-    color: #fff; /* Beyaz yazı */
-    font-size: 1.25rem; /* Büyük yazı */
-    transition: color 0.3s ease, background-color 0.3s ease; /* Geçiş efektleri */
-  }
-  
-  .nav-links li a:hover {
-    color: #ffcc00; /* Sarıya dönüşüm */
-     /* Daha koyu mor arka plan */
-    border-radius: 5px; /* Köşeler yuvarlatıldı */
-  }
-  
-  main {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* İçeriği dikeyde ortalama */
-    align-items: center; /* İçeriği yatayda ortalama */
-}
-
+        .navbar .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 20px;
+            padding: 0;
+        }
+        .nav-links li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.25rem;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        main {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
         main h1 {
             font-size: 2rem;
             color: #6200ea;
             margin-bottom: 20px;
         }
-
         main form {
             display: flex;
             flex-direction: column;
         }
-
         main label {
             font-size: 1rem;
             font-weight: bold;
             margin-bottom: 5px;
             text-align: left;
         }
-
-        main input {
+        main select, main input {
             padding: 10px;
             font-size: 1rem;
             margin-bottom: 20px;
@@ -96,12 +77,10 @@
             transition: border-color 0.3s ease;
             width: 100%;
         }
-
-        main input:focus {
+        main input:focus, main select:focus {
             border-color: #6200ea;
             outline: none;
         }
-
         main button {
             background-color: #6200ea;
             color: white;
@@ -112,29 +91,23 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
         main button:hover {
             background-color: #3700b3;
         }
-
         main p {
             font-size: 0.9rem;
             color: #555;
             margin-top: 20px;
         }
-
         main p a {
             text-decoration: none;
             color: #6200ea;
             font-weight: bold;
             transition: color 0.3s ease;
         }
-
         main p a:hover {
             color: #3700b3;
         }
-
-        
     </style>
 </head>
 <body>
@@ -153,53 +126,67 @@
     </header>
     
     <div class="main2">
-    <main >
-        <h1>Kullanıcı Girişi</h1>
-        <form id="loginForm">
-            <label for="nickname">Kullanıcı Adı:</label>
-            <input type="text" id="nickname" name="nickname" placeholder="Kullanıcı adınızı girin" required>
-            
-            <label for="password">Şifre:</label>
-            <input type="password" id="password" name="password" placeholder="Şifrenizi girin" required>
-            
-            <button type="submit">Giriş Yap</button>
-            <p>Hesabınız yok mu? <a href="register.html">Kayıt Ol</a></p>
-        </form>
-        <script>
-            document.getElementById('loginForm').addEventListener('submit', async function (e) {
-                e.preventDefault();
+        <main>
+            <h1>Kullanıcı Girişi</h1>
+            <form id="loginForm">
+                <label for="nickname">Kullanıcı Adı:</label>
+                <input type="text" id="nickname" name="nickname" placeholder="Kullanıcı adınızı girin" required>
                 
-                const nickname = document.getElementById('nickname').value;
-                const password = document.getElementById('password').value;
-            
-                try {
-                    const response = await fetch('http://localhost:3000/login', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ nickname, password })
-                    });
-            
-                    const data = await response.json();
-            
-                    if (response.ok) {
-                        localStorage.setItem('token', data.token);
-                        alert('Giriş başarılı!');
-                        window.location.href = 'profile.html';
-                    } else {
-                        alert(data.error);
+                <label for="password">Şifre:</label>
+                <input type="password" id="password" name="password" placeholder="Şifrenizi girin" required>
+                
+                <label for="role">Rol:</label>
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Rol Seçin</option>
+                    <option value="admin">Admin</option>
+                    <option value="satıcı">Satıcı</option>
+                    <option value="müşteri">Müşteri</option>
+                </select>
+                
+                <button type="submit">Giriş Yap</button>
+                <p>Hesabınız yok mu? <a href="register.html">Kayıt Ol</a></p>
+            </form>
+            <script>
+                document.getElementById('loginForm').addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    
+                    const nickname = document.getElementById('nickname').value;
+                    const password = document.getElementById('password').value;
+                    const role = document.getElementById('role').value;
+                
+                    try {
+                        const response = await fetch('http://localhost:3000/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ nickname, password, role })
+                        });
+                
+                        const data = await response.json();
+                
+                        if (response.ok) {
+                            localStorage.setItem('token', data.token);
+                            alert('Giriş başarılı!');
+                            window.location.href = 'profile.html';
+                        } else {
+                            alert(data.error);
+                        }
+                    } catch (error) {
+                        console.error('Hata:', error);
+                        alert('Sunucu hatası!');
                     }
-                } catch (error) {
-                    console.error('Hata:', error);
-                    alert('Sunucu hatası!');
-                }
-            });
+                });
             </script>
+<<<<<<< HEAD
             <script src="navbar.js"></script>
 
             
     </main>
 </div>
+=======
+        </main>
+    </div>
+>>>>>>> 71751fde63cf05bc12f0840a8a6f649960f39073
 </body>
 </html>
