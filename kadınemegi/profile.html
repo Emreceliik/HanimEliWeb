@@ -197,11 +197,11 @@
     <main>
         <div class="profile-container">
             <section class="profile-info">
-                <img src="profile.jpg" alt="Profil Fotoğrafı">
+                <img id="profileImg" src="profile.jpg" alt="Profil Fotoğrafı">
                 <div>
-                    <h3 id="username"></h3> <!-- Kullanıcı adı dinamik olarak buraya gelecek -->
-                    <p id="fullName"></p> <!-- Kullanıcı adı ve soyadı -->
-                    <p id="gender"></p> <!-- Kullanıcı cinsiyeti -->
+                    <h3 id="username"></h3>
+                    <p id="fullName"></p>
+                    <p id="gender"></p>
                     <div class="stars">
                         <i class="active">&#9733;</i>
                         <i class="active">&#9733;</i>
@@ -260,27 +260,49 @@
                     return;
                 }
                 try {
-                    const response = await fetch('/api/users/profile', {
+                    const response = await fetch('http://localhost:3000/api/users/profile', {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${token}`,
+                            'Authorization': `Bearer ${token}`, // Token burada ekleniyor
                         },
                     });
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log(data); // API yanıtını konsola yazdır
 
-                        document.getElementById('username').textContent = `@${data.username}`;
-                        document.getElementById('fullName').textContent = data.fullName;
-                        document.getElementById('gender').textContent = data.gender;
-                    }
-                    else {
-                        console.error('Kullanıcı bilgileri alınamadı');
+                    if (response.ok) {
+                        const data = await response.json(); // API'den gelen JSON verisini al
+                        console.log(data); // Gelen veriyi konsola yazdır
+
+                        // API'den gelen verilere göre profili güncelle
+                        if (data.kullanici_id) {
+                            document.getElementById('username').textContent = `@${data.kullanici_id}`; // Burada username'i kullanici_id ile değiştiriyoruz
+                        } else {
+                            console.error('Kullanıcı adı bulunamadı!');
+                        }
+
+                        if (data.fullName) {
+                            document.getElementById('fullName').textContent = data.fullName;
+                        } else {
+                            console.error('Tam ad bulunamadı!');
+                        }
+
+                        if (data.gender) {
+                            document.getElementById('gender').textContent = data.gender;
+                        } else {
+                            console.error('Cinsiyet bilgisi bulunamadı!');
+                        }
+
+                        document.getElementById('profileImg').src = data.profilePic || 'defaultProfilePic.jpg';
+                    } else {
+                        const errorData = await response.json(); // Hata mesajı alınıyor
+                        console.error('Kullanıcı bilgileri alınamadı:', errorData.error);
+                        alert('Kullanıcı bilgileri alınamadı: ' + errorData.error);
                     }
                 } catch (error) {
                     console.error('Bir hata oluştu:', error);
+                    alert('Bir hata oluştu: ' + error.message);
                 }
             }
+
+
 
             // Sayfa yüklendiğinde kullanıcı profilini getir
             document.addEventListener('DOMContentLoaded', getUserProfile);
@@ -290,7 +312,6 @@
             accordions.forEach(accordion => {
                 accordion.addEventListener('click', function () {
                     const content = this.nextElementSibling;
-                    // Açılıp kapanma animasyonu
                     if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                         this.classList.remove('active');
