@@ -11,15 +11,10 @@
         /* Genel Stiller */
         .main2 {
             display: flex;
-            /* Flexbox kullanarak içerik ortalanır */
             justify-content: center;
-            /* İçeriği yatayda ortala */
             align-items: center;
-            /* İçeriği dikeyde ortala */
             width: 100%;
-            /* Ana genişlik */
             height: 100%;
-            /* Ana yüksekliği tam ekran yap */
         }
 
         body {
@@ -28,7 +23,6 @@
             background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
-            /*align-items: center; */
         }
 
         /* Navbar Stilleri */
@@ -36,36 +30,26 @@
             font-size: 2rem;
             font-weight: bold;
             color: #fff;
-            /* Beyaz yazı */
         }
 
         .nav-links {
             list-style: none;
             display: flex;
             gap: 15px;
-            /* Bağlantılar arasında boşluk */
             margin: 20px;
-            /* Margin sıfırlandı */
             padding: 0;
-            /* Padding sıfırlandı */
         }
 
         .nav-links li a {
             text-decoration: none;
             color: #fff;
-            /* Beyaz yazı */
             font-size: 1.25rem;
-            /* Büyük yazı */
             transition: color 0.3s ease, background-color 0.3s ease;
-            /* Geçiş efektleri */
         }
 
         .nav-links li a:hover {
             color: #ffcc00;
-            /* Sarıya dönüşüm */
-            /* Daha koyu mor arka plan */
             border-radius: 5px;
-            /* Köşeler yuvarlatıldı */
         }
 
         main {
@@ -80,9 +64,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* İçeriği dikeyde ortalama */
             align-items: center;
-            /* İçeriği yatayda ortalama */
         }
 
         main h1 {
@@ -180,8 +162,7 @@
                 <input type="password" id="password" name="password" placeholder="Şifrenizi girin" required>
 
                 <label for="confirmPassword">Şifre Tekrar:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin"
-                    required>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin" required>
 
                 <label for="email">E-posta:</label>
                 <input type="email" id="email" name="email" placeholder="E-posta adresinizi girin" required>
@@ -191,6 +172,13 @@
                     <option value="female">Kadın</option>
                     <option value="male">Erkek</option>
                     <option value="other">Diğer</option>
+                </select>
+
+                <label for="role">Rol:</label>
+                <select id="role" name="role" required>
+                    <option value="admin">Admin</option>
+                    <option value="seller">Satıcı</option>
+                    <option value="customer">Müşteri</option>
                 </select>
 
                 <button type="submit">Kayıt Ol</button>
@@ -206,12 +194,13 @@
                     const confirmPassword = document.getElementById('confirmPassword').value;
                     const email = document.getElementById('email').value;
                     const gender = document.getElementById('gender').value;
+                    const role = document.getElementById('role').value;
 
                     try {
                         const response = await fetch('http://localhost:3000/register', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ nickname, password, confirmPassword, email, gender })
+                            body: JSON.stringify({ nickname, password, confirmPassword, email, gender, role })
                         });
 
                         const data = await response.json();
@@ -221,11 +210,6 @@
                     }
                 });
             </script>
-
-
-            <button type="submit">Kayıt Ol</button>
-            <p>Zaten hesabınız var mı? <a href="login.html">Giriş Yap</a></p>
-            </form>
         </main>
     </div>
 </body>
