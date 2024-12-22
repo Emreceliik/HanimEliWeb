@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,12 @@
             display: flex;
             flex-direction: column;
         }
+
         .content-container {
             display: flex;
             flex: 1;
         }
+
         .sidebar {
             width: 250px;
             background-color: #ffd1dc;
@@ -26,46 +28,56 @@
             position: sticky;
             top: 60px;
         }
+
         .sidebar h2 {
             font-size: 20px;
             margin-bottom: 15px;
         }
+
         .sidebar label {
             display: block;
             margin: 10px 0;
         }
+
         .sidebar input[type="checkbox"] {
             margin-right: 10px;
         }
+
         .sidebar select {
             width: 100%;
             padding: 5px;
             margin-bottom: 15px;
         }
+
         .main-content {
             flex: 1;
             padding: 20px;
         }
+
         .ilanlar-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 15px;
         }
+
         .ilan-card {
             border: 1px solid #ddd;
             padding: 15px;
             border-radius: 5px;
             text-align: center;
         }
+
         .ilan-card img {
             max-width: 100%;
             border-radius: 5px;
         }
+
         .ilan-card h3 {
             margin: 10px 0;
         }
     </style>
 </head>
+
 <body onload="checkAuth()">
     <header>
         <nav class="navbar">
@@ -75,7 +87,7 @@
                 <li><a href="ilan-ver.html">İlan Ver</a></li>
                 <li><a href="#sohbet">Sohbet</a></li>
                 <li><a href="profile.html">Profile</a></li>
-                <li><a href="login.html">Giriş Yap</a></li>
+                <li><a href="login.html" id="loginLogoutBtn">Giriş Yap</a></li>
                 <li><a href="iletisim.html">İletişim</a></li>
             </ul>
         </nav>
@@ -135,7 +147,7 @@
         ];
 
         const ilanlarContainer = document.getElementById('ilanlar');
-        
+
         function displayIlanlar(filteredIlanlar) {
             ilanlarContainer.innerHTML = '';
             filteredIlanlar.forEach((ilan, index) => {
@@ -184,5 +196,8 @@
             window.location.href = url;
         }
     </script>
+    <script src="navbar.js"></script>
+
 </body>
+
 </html>
