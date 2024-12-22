@@ -1,14 +1,70 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anasayfa</title>
- <link rel="stylesheet" href="style.css"> 
-<style>
-
-    
-</style>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-container {
+            display: flex;
+            flex: 1;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #ffd1dc;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            height: calc(100vh - 60px);
+            position: sticky;
+            top: 60px;
+        }
+        .sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        .sidebar label {
+            display: block;
+            margin: 10px 0;
+        }
+        .sidebar input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .sidebar select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 15px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .ilanlar-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        .ilan-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .ilan-card img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .ilan-card h3 {
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body onload="checkAuth()">
     <header>
@@ -20,14 +76,44 @@
                 <li><a href="#sohbet">Sohbet</a></li>
                 <li><a href="profile.html">Profile</a></li>
                 <li><a href="login.html">Giriş Yap</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="iletisim.html">İletişim</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <section id="ilanlar" class="ilanlar-container">
-        </section>
-    </main>
+    <div class="content-container">
+        <div class="sidebar">
+            <h2>Kategoriler</h2>
+            <label><input type="checkbox" name="kategori" value="bebek"> El İşi Bebek</label>
+            <label><input type="checkbox" name="kategori" value="kazak"> Örgü Kazak</label>
+            <h2>Filtreleme</h2>
+            <label>Fiyat Aralığı:
+                <select id="priceFilter">
+                    <option value="">Seçin</option>
+                    <option value="0-100">0 - 100₺</option>
+                    <option value="101-200">101 - 200₺</option>
+                    <option value="200+">200₺ ve üzeri</option>
+                </select>
+            </label>
+            <h2>Sıralama</h2>
+            <label>Sıralama Ölçütü:
+                <select id="sortCriteria">
+                    <option value="">Seçin</option>
+                    <option value="price_asc">Fiyat (Artan)</option>
+                    <option value="price_desc">Fiyat (Azalan)</option>
+                    <option value="title_asc">Başlık (A-Z)</option>
+                    <option value="title_desc">Başlık (Z-A)</option>
+                </select>
+            </label>
+            <button onclick="applyFilters()">Uygula</button>
+        </div>
+        <div class="main-content">
+            <main>
+                <section id="ilanlar" class="ilanlar-container">
+                </section>
+            </main>
+        </div>
+    </div>
+
     <script>
         const ilanlar = [
             {
@@ -35,28 +121,64 @@
                 price: 150,
                 description: 'El yapımı oyuncak bebek.',
                 user: 'Ayşe',
-                image: 'https://via.placeholder.com/150'
+                image: 'https://via.placeholder.com/150',
+                category: 'bebek'
             },
             {
                 title: 'Örgü Kazak',
                 price: 200,
                 description: 'Elde örülmüş kışlık kazak.',
                 user: 'Fatma',
-                image: 'https://via.placeholder.com/150'
+                image: 'https://via.placeholder.com/150',
+                category: 'kazak'
             }
         ];
 
         const ilanlarContainer = document.getElementById('ilanlar');
-        ilanlar.forEach((ilan, index) => {
-            ilanlarContainer.innerHTML += `
-                <div class="ilan-card">
-                    <img src="${ilan.image}" alt="${ilan.title}" class="ilan-image">
-                    <h3>${ilan.title} - ${ilan.price}₺</h3>
-                    <p>${ilan.description}</p>
-                    <button onclick="redirectTo('ilan-detay.html?id=${index}')">Detayları Gör</button>
-                </div>
-            `;
-        });
+        
+        function displayIlanlar(filteredIlanlar) {
+            ilanlarContainer.innerHTML = '';
+            filteredIlanlar.forEach((ilan, index) => {
+                ilanlarContainer.innerHTML += `
+                    <div class="ilan-card">
+                        <img src="${ilan.image}" alt="${ilan.title}" class="ilan-image">
+                        <h3>${ilan.title} - ${ilan.price}₺</h3>
+                        <p>${ilan.description}</p>
+                        <button onclick="redirectTo('ilan-detay.html?id=${index}')">Detayları Gör</button>
+                    </div>
+                `;
+            });
+        }
+
+        function applyFilters() {
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="kategori"]:checked')).map(input => input.value);
+            const priceFilter = document.getElementById('priceFilter').value;
+            const sortCriteria = document.getElementById('sortCriteria').value;
+
+            let filteredIlanlar = ilanlar;
+
+            if (selectedCategories.length > 0) {
+                filteredIlanlar = filteredIlanlar.filter(ilan => selectedCategories.includes(ilan.category));
+            }
+
+            if (priceFilter) {
+                const [min, max] = priceFilter === '200+' ? [200, Infinity] : priceFilter.split('-').map(Number);
+                filteredIlanlar = filteredIlanlar.filter(ilan => ilan.price >= min && ilan.price <= max);
+            }
+
+            if (sortCriteria) {
+                filteredIlanlar.sort((a, b) => {
+                    if (sortCriteria === 'price_asc') return a.price - b.price;
+                    if (sortCriteria === 'price_desc') return b.price - a.price;
+                    if (sortCriteria === 'title_asc') return a.title.localeCompare(b.title);
+                    if (sortCriteria === 'title_desc') return b.title.localeCompare(a.title);
+                });
+            }
+
+            displayIlanlar(filteredIlanlar);
+        }
+
+        displayIlanlar(ilanlar);
 
         function redirectTo(url) {
             window.location.href = url;

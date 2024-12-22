@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Web Sitesi</title>
+    <style>
+      
+        
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            /*align-items: center; */
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #db7093;
+            padding: 10px 20px;
+        }
+        
+        .navbar .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            /* Beyaz yazı */
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            /* Bağlantılar arasında boşluk */
+            margin: 20px;
+            /* Margin sıfırlandı */
+            padding: 0;
+            /* Padding sıfırlandı */
+        }
+
+        .nav-links li a {
+            text-decoration: none;
+            color: #fff;
+            /* Beyaz yazı */
+            font-size: 1.25rem;
+            /* Büyük yazı */
+            transition: color 0.3s ease, background-color 0.3s ease;
+            /* Geçiş efektleri */
+        }
+
+        .nav-links li a:hover {
+            color: #ffcc00;
+            /* Sarıya dönüşüm */
+            /* Daha koyu mor arka plan */
+            border-radius: 5px;
+            /* Köşeler yuvarlatıldı */
+        }
+        .contact-page {
+            display: flex;
+            justify-content: space-between;
+            padding: 50px 10%;
+        }
+        
+        .contact-info {
+            width: 40%;
+        }
+        
+        .contact-info h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .contact-info p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .contact-info .info {
+            margin-top: 30px;
+        }
+        
+        .contact-info .contact-item {
+            margin-bottom: 20px;
+        }
+        
+        .contact-info .contact-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #854ce0;
+        }
+        
+        .contact-info .contact-item p {
+            font-size: 1rem;
+        }
+        
+        .contact-info .contact-item a {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .contact-info .contact-item a:hover {
+            color: #ffcc00;
+        }
+        
+        .contact-form {
+            width: 50%;
+        }
+        
+        .contact-form h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+        
+        .contact-form label {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #af4c89;
+            outline: none;
+        }
+        
+        .contact-form .submit-btn {
+            background-color: #854ce0;
+            color: #fff;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-form .submit-btn:hover {
+            background-color: #ffcc00;
+        }
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+        
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Kadın Emeği</div>
+            <ul class="nav-links">
+              <li><a href="index.html">Anasayfa</a></li>
+              <li><a href="ilan-ver.html">İlan Ver</a></li>
+              <li><a href="#sohbet">Sohbet</a></li>
+              <li><a href="profile.html">Profile</a></li>
+              <li><a href="login.html">Giriş Yap</a></li>
+              <li><a href="#iletisim">İletişim</a></li>
+            </ul>
+          </nav>
+    </header>
+
+    <main class="contact-page">
+        <section class="contact-info">
+            <h1>Bizimle İletişime Geçin</h1>
+            <p>Herhangi bir sorunuz mu var? Aşağıdaki formu doldurarak bizimle iletişime geçebilirsiniz.</p>
+            
+            <div class="info">
+                <div class="contact-item">
+                    <h3>Adres</h3>
+                    <p>Örnek Mahallesi, Web Sokak No:10, İstanbul, Türkiye</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Telefon</h3>
+                    <p><a href="tel:+905555555555">+90 555 555 55 55</a></p>
+                </div>
+                <div class="contact-item">
+                    <h3>E-posta</h3>
+                    <p><a href="mailto:info@ornekweb.com">info@ornekweb.com</a></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-form">
+            <h2>İletişim Formu</h2>
+            <form action="#" method="POST">
+                <label for="name">Adınız</label>
+                <input type="text" id="name" name="name" required placeholder="Adınızı girin">
+
+                <label for="email">E-posta Adresiniz</label>
+                <input type="email" id="email" name="email" required placeholder="E-posta adresinizi girin">
+
+                <label for="subject">Konu</label>
+                <input type="text" id="subject" name="subject" required placeholder="Konu başlığını girin">
+
+                <label for="message">Mesajınız</label>
+                <textarea id="message" name="message" rows="5" required placeholder="Mesajınızı buraya yazın"></textarea>
+
+                <button type="submit" class="submit-btn">Gönder</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Kadın Emeği - Tüm Hakları Saklıdır.</p>
+    </footer>
+</body>
+</html>
