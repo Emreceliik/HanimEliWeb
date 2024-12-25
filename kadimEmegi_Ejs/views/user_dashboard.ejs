@@ -12,7 +12,8 @@
                 <p><%= listing.category %></p>
                 <p><%= listing.approved ? 'Onaylı' : 'Onaysız' %></p>
                 <a href="/listings/<%= listing.id %>/edit">Düzenle</a>
-                <a href="/listings/<%= listing.id %>/delete">Sil</a>
+                <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinizden emin misiniz?')">İlanı Sil</a>
+
             </li>
         <% }) %>
     </ul>
