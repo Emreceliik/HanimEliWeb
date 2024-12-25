@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('../partials/header.ejs') %>
 <h1>İlan Düzenle</h1>
 <form method="POST" action="/listings/<%= listing.id %>/edit" enctype="multipart/form-data">
   <input type="text" name="title" value="<%= listing.title %>" placeholder="İlan Başlığı" required />
@@ -14,4 +14,4 @@
   <input type="file" name="image" />
   <button type="submit">İlanı Güncelle</button>
 </form>
-<%- include('partials/footer') %>
+<%- include('../partials/footer.ejs') %>
