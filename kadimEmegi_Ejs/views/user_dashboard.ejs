@@ -10,8 +10,14 @@
         <br>
         <small>Ekleyen: <%= listing.username %></small>
         <br>
-        <!-- Resim Yolu Güncellendi -->
         <img src="<%= listing.image_path %>" alt="<%= listing.title %>" style="max-width: 200px;">
+        
+        <!-- Sepete Ekle Butonu -->
+        <form method="POST" action="/cart/add">
+          <input type="hidden" name="listing_id" value="<%= listing.id %>">
+          <input type="number" name="quantity" value="1" min="1">
+          <button type="submit">Sepete Ekle</button>
+        </form>
       </li>
     <% }); %>
   </ul>
@@ -52,23 +58,28 @@
   <p>Henüz sertifikanız yok.</p>
   <a href="/certificates/upload">Yeni Sertifika Ekle</a>
 <% } %>
-
 <h2>Sepetiniz</h2>
 <% if (cartItems.length > 0) { %>
   <ul>
     <% cartItems.forEach(item => { %>
       <li>
-        <p>İlan Başlığı: <%= item.title %></p>
-        <p>Adet: <%= item.quantity %></p>
-        <p>Fiyat: <%= item.price * item.quantity %> TL</p>
-        <a href="/cart/<%= item.id %>/remove">Sepetten Çıkar</a>
+        <strong><%= item.title %></strong> - <%= item.quantity %> adet - <%= item.price * item.quantity %> TL
+        <br>
+        <img src="<%= item.image_path %>" alt="<%= item.title %>" style="max-width: 200px;">
+        
+        <!-- Sepetten Çıkarma Butonu -->
+        <form method="POST" action="/cart/remove">
+          <input type="hidden" name="cartId" value="<%= item.id %>">
+          <button type="submit">Sepetten Çıkar</button>
+        </form>
       </li>
     <% }); %>
   </ul>
-  <a href="/cart/checkout">Ödeme Yap</a>
+  <a href="/checkout">Ödeme Sayfasına Git</a>
 <% } else { %>
   <p>Sepetinizde ürün bulunmamaktadır.</p>
 <% } %>
+
 
 <h2>Mesajlarınız</h2>
 <% if (messages.length > 0) { %>

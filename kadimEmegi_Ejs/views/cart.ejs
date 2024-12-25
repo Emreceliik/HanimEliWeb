@@ -1,20 +1,25 @@
 <%- include('partials/header', { title: 'Sepet' }) %>
-<h1>Sepetiniz</h1>
-
+<h2>Sepetiniz</h2>
 <% if (cartItems.length > 0) { %>
   <ul>
     <% cartItems.forEach(item => { %>
       <li>
-        <p>İlan Başlığı: <%= item.title %></p>
-        <p>Adet: <%= item.quantity %></p>
-        <p>Fiyat: <%= item.quantity * item.price %> TL</p>
-        <a href="/cart/<%= item.id %>/remove">Sepetten Çıkar</a>
+        <strong><%= item.title %></strong> - <%= item.quantity %> adet - <%= item.price * item.quantity %> TL
+        <br>
+        <img src="<%= item.image_path %>" alt="<%= item.title %>" style="max-width: 200px;">
+        
+        <!-- Sepetten Çıkarma Butonu -->
+        <form method="POST" action="/cart/remove">
+          <input type="hidden" name="cartId" value="<%= item.id %>">
+          <button type="submit">Sepetten Çıkar</button>
+        </form>
       </li>
-    <% }) %>
+    <% }); %>
   </ul>
-  <a href="/cart/checkout">Ödeme Yap</a>
+  <a href="/checkout">Ödeme Sayfasına Git</a>
 <% } else { %>
   <p>Sepetinizde ürün bulunmamaktadır.</p>
 <% } %>
+
 
 <%- include('partials/footer') %>

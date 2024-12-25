@@ -39,4 +39,19 @@ router.get('/', (req, res) => {
   );
 });
 
+
+// Sepetten Ürün Silme (POST)
+router.post('/remove', (req, res) => {
+  const cartId = req.body.cartId;  // Formdan gelen cartId
+
+  db.query(
+    'DELETE FROM cart WHERE id = ?',
+    [cartId],
+    (err) => {
+      if (err) throw err;
+      res.redirect('/cart'); // Sepet sayfasına yönlendir
+    }
+  );
+});
+
 module.exports = router;

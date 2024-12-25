@@ -26,13 +26,14 @@ router.get('/dashboard', (req, res) => {
   // Kullanıcının sertifikaları
   const certificatesQuery = 'SELECT * FROM certificates WHERE user_id = ?';
 
-  // Kullanıcının sepetindeki ürünler
-  const cartItemsQuery = `
-    SELECT c.*, l.title, l.price 
-    FROM cart c 
-    JOIN listings l ON c.listing_id = l.id 
-    WHERE c.user_id = ?
-  `;
+// Kullanıcının sepetindeki ürünler
+const cartItemsQuery = `
+  SELECT c.*, l.title, l.price, l.image_path
+  FROM cart c 
+  JOIN listings l ON c.listing_id = l.id 
+  WHERE c.user_id = ?
+`;
+
 
   // Kullanıcının mesajları (gönderilen ve alınan)
   const messagesQuery = `
