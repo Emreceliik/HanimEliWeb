@@ -22,13 +22,26 @@
           <input type="number" name="quantity" value="1" min="1">
           <button type="submit">Sepete Ekle</button>
         </form>
+
+        <!-- Mesaj Gönder Butonu -->
+        <button class="message-button" data-listing-id="<%= listing.id %>">Mesaj Gönder</button>
+        
+        <!-- Mesaj Gönderme Formu -->
+        <div class="message-form" id="message-form-<%= listing.id %>" style="display: none;">
+          <form method="POST" action="/messages/send">
+            <input type="hidden" name="receiver_id" value="<%= listing.user_id %>">
+            <label for="content-<%= listing.id %>">Mesaj:</label>
+            <textarea name="content" id="content-<%= listing.id %>" required></textarea>
+            <br>
+            <button type="submit">Gönder</button>
+          </form>
+        </div>
       </li>
     <% }); %>
   </ul>
 <% } else { %>
   <p>Henüz bir ilan eklenmedi.</p>
 <% } %>
-
 
 <hr>
 
@@ -47,6 +60,7 @@
 <% } else { %>
   <p>Henüz bir ilan eklemediniz.</p>
 <% } %>
+
 
 <h2>Sertifikalarınız</h2>
 <% if (certificates.length > 0) { %>
@@ -85,20 +99,114 @@
   <p>Sepetinizde ürün bulunmamaktadır.</p>
 <% } %>
 
+<h2>Siparişleriniz</h2>
+<% if (orders.length > 0) { %>
+  <ul>
+    <% orders.forEach(order => { %>
+      <li>
+        <strong>Sipariş Numarası: <%= order.id %></strong>
+        <br>
+        <strong>Ödeme Yöntemi:</strong> <%= order.payment_method %>
+        <br>
+        <strong>Gönderim Adresi:</strong> <%= order.shipping_address %>
+        <br>
+        <strong>Durum:</strong> <%= order.order_status %>
+        <br>
+        <strong>Toplam Fiyat:</strong> <%= order.total_price %> TL
+        <br>
+        <img src="<%= order.image_path %>" alt="<%= order.title %>" style="max-width: 200px;">
+      </li>
+    <% }); %>
+  </ul>
+<% } else { %>
+  <p>Henüz siparişiniz yok.</p>
+<% } %>
+
 
 <h2>Mesajlarınız</h2>
-<% if (messages.length > 0) { %>
+
+<h3>Gelen Mesajlar</h3>
+<% if (receivedMessages.length > 0) { %>
   <ul>
-    <% messages.forEach(message => { %>
+    <% receivedMessages.forEach(message => { %>
       <li>
         <p><%= message.content %></p>
         <p>Gönderen: <%= message.sender_username %></p>
+        <p>Tarih: <%= message.sent_at %></p>
+        
+        <!-- Cevap Ver Butonu -->
+        <button class="reply-button" data-message-id="<%= message.id %>">Cevapla</button>
+
+        <!-- Cevap Formu -->
+        <div class="reply-form" id="reply-form-<%= message.id %>" style="display: none;">
+          <form method="POST" action="/messages/reply">
+            <input type="hidden" name="message_id" value="<%= message.id %>">
+            <textarea name="content" placeholder="Cevabınızı yazın..." required></textarea>
+            <button type="submit">Gönder</button>
+          </form>
+        </div>
+      </li>
+    <% }); %>
+  </ul>
+<% } else { %>
+  <p>Henüz gelen mesajınız yok.</p>
+<% } %>
+
+<h3>Giden Mesajlar</h3>
+<% if (sentMessages.length > 0) { %>
+  <ul>
+    <% sentMessages.forEach(message => { %>
+      <li>
+        <p><%= message.content %></p>
+        <p>Alıcı: <%= message.receiver_username %></p>
         <p>Tarih: <%= message.sent_at %></p>
       </li>
     <% }); %>
   </ul>
 <% } else { %>
-  <p>Henüz mesajınız yok.</p>
+  <p>Henüz giden mesajınız yok.</p>
 <% } %>
+
+
+<h2>Profil Bilgilerinizi Güncelleyin</h2>
+<form method="POST" action="/user/update-profile">
+  <label for="first_name">Ad:</label>
+  <input type="text" id="first_name" name="first_name" value="<%= user.first_name %>" required>
+  <br>
+  <label for="last_name">Soyad:</label>
+  <input type="text" id="last_name" name="last_name" value="<%= user.last_name %>" required>
+  <br>
+  <label for="gender">Cinsiyet:</label>
+  <select id="gender" name="gender">
+    <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Erkek</option>
+    <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Kadın</option>
+    <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Diğer</option>
+  </select>
+  <br>
+  <button type="submit">Güncelle</button>
+</form>
+
+
+
+<script>
+    // Mesaj Gönder Butonu ile Mesaj Formunu Gösterme
+    document.querySelectorAll('.message-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const listingId = this.getAttribute('data-listing-id');
+        const messageForm = document.getElementById(`message-form-${listingId}`);
+        messageForm.style.display = messageForm.style.display === 'none' ? 'block' : 'none';
+      });
+    });
+
+
+     // Cevap Ver Butonu ile Cevap Formunu Gösterme
+  document.querySelectorAll('.reply-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const messageId = this.getAttribute('data-message-id');
+      const replyForm = document.getElementById(`reply-form-${messageId}`);
+      replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+    });
+  });
+  </script>
 
 <%- include('partials/footer') %>
