@@ -1,104 +1,470 @@
-<%- include('partials/header', { title: 'Kullanıcı Dashboard' }) %>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        
+
+    /* Genel stil */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Başlık ve içerik düzeni */
+h1, h2, h3 {
+  color: #e91e63; /* Güçlü bir pembe ton */
+  text-align: center;
+}
+
+/* Liste düzeni */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+strong {
+  font-size: 1.1em;
+  color: #333;
+}
+
+/* Sepet ve ürün resimlerinin düzeni */
+img {
+  max-width: 200px;
+  display: block;
+  margin-top: 10px;
+}
+
+/* Form ve butonlar */
+button {
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #d81b60;
+}
+
+input, select, textarea {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* Açılır kapanır form */
+.message-form, .reply-form {
+  display: none;
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.message-button, .reply-button {
+  background-color: #4caf50;
+  padding: 8px 16px;
+  margin-top: 10px;
+}
+
+.message-button:hover, .reply-button:hover {
+  background-color: #45a049;
+}
+
+/* Aşağı kaydırma alanı */
+a {
+  color: #e91e63;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Mesaj gönder ve cevap verme için formun gizlenmesi */
+.message-form, .reply-form {
+  transition: all 0.3s ease;
+}
+/* Navbar ve içerik görünürlüğü */
+nav {
+  position: fixed; /* Navbar'ı üstte tutmak için fixed kullanıyoruz */
+  top: 0;
+  width: 100%;
+  background-color: #e91e63;
+  z-index: 1000; /* Navbar'ı sayfanın en üstünde tutmak için z-index */
+}
+
+nav ul {
+  list-style-type: none;
+
+  margin: 0;
+  text-align: center;
+}
+
+nav ul li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  padding: 10px 15px;
+  background-color: #e91e63;
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+nav ul li a:hover {
+  background-color: #d81b60;
+}
+
+/* Sayfa içeriğinin navbar altında başlamasını sağlıyoruz */
+body {
+  margin-top: 60px; /* Navbar'ın yüksekliği kadar bir boşluk bırakıyoruz */
+}
+
+.content-section {
+  display: none;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+#all-listings-content {
+  display: block;
+}
+
+
+
+
+    </style>
+</head>
+<body>
 <h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
 
-<h2>Tüm İlanlar</h2>
-<% if (allListings.length > 0) { %>
-  <ul>
-    <% allListings.forEach(listing => { %>
-      <li>
-        <strong><%= listing.title %></strong> - <%= listing.price %> TL
-        <br>
-        <small>Ekleyen: <%= listing.username %></small>
-        <br>
-        <small>Kategori: <%= listing.category %></small>
-        <br>
-        <small>Açıklama: <%= listing.description %></small>
-        <br>
-        <img src="<%= listing.image_path %>" alt="<%= listing.title %>" style="max-width: 200px;">
-        
-        <!-- Sepete Ekle Butonu -->
-        <form method="POST" action="/cart/add">
-          <input type="hidden" name="listing_id" value="<%= listing.id %>">
-          <input type="number" name="quantity" value="1" min="1">
-          <button type="submit">Sepete Ekle</button>
-        </form>
-      </li>
-    <% }); %>
-  </ul>
-<% } else { %>
-  <p>Henüz bir ilan eklenmedi.</p>
-<% } %>
+<nav>
+    <ul>
+      <li><a href="#" id="all-listings-tab">Tüm İlanlar</a></li>
+      <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
+      <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
+      <li><a href="#" id="cart-tab">Sepet</a></li>
+      <li><a href="#" id="orders-tab">Siparişler</a></li>
+      <li><a href="#" id="messages-tab">Mesajlar</a></li>
+      <li><a href="#" id="profile-tab">Profil</a></li>
+      <li><a href="/auth/logout">Çıkış Yap</a></li>
+    </ul>
+  </nav>
+
+<!-- İçerikler -->
+<div id="all-listings-content" class="content-section" style="padding: 20px; margin: 0 auto; max-width: 1200px;">
+    <h2>Tüm İlanlar</h2>
+    <% if (allListings.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% allListings.forEach(listing => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <strong style="font-size: 1.2rem; margin-bottom: 10px;"><%= listing.title %></strong> - <%= listing.price %> TL
+            <br>
+            <small>Ekleyen: <%= listing.username %></small>
+            <br>
+            <small>Kategori: <%= listing.category %></small>
+            <br>
+            <small>Açıklama: <%= listing.description %></small>
+            <br>
+            <img src="<%= listing.image_path %>" alt="<%= listing.title %>" style="max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0;">
+  
+            <!-- Sepete Ekle Butonu -->
+            <form method="POST" action="/cart/add" style="margin-top: 10px;">
+              <input type="hidden" name="listing_id" value="<%= listing.id %>">
+              <input type="number" name="quantity" value="1" min="1" style="padding: 5px; border-radius: 5px; border: 1px solid #ddd; width: 60px; margin-right: 10px;">
+              <button type="submit" style="background-color: #e91e63; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%;">Sepete Ekle</button>
+            </form>
+  
+            <!-- Mesaj Gönder Butonu -->
+            <button class="message-button" data-listing-id="<%= listing.id %>" style="background-color: #007bff; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px;">
+              Mesaj Gönder
+            </button>
+  
+            <!-- Mesaj Gönderme Formu -->
+            <div class="message-form" id="message-form-<%= listing.id %>" style="display: none; margin-top: 10px;">
+              <form method="POST" action="/messages/send">
+                <input type="hidden" name="receiver_id" value="<%= listing.user_id %>">
+                <label for="content-<%= listing.id %>" style="display: block; margin-bottom: 5px;">Mesaj:</label>
+                <textarea name="content" id="content-<%= listing.id %>" required style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 0.9rem;"></textarea>
+                <br>
+                <button type="submit" style="background-color: #28a745; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%; margin-top: 10px;">Gönder</button>
+              </form>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>Henüz bir ilan eklenmedi.</p>
+    <% } %>
+  </div>
+  
+
+  <div id="my-listings-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
+    <h2>Senin İlanların</h2>
+    <% if (userListings.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% userListings.forEach(listing => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <strong style="font-size: 1.2rem; margin-bottom: 10px;"><%= listing.title %></strong> - <%= listing.price %> TL
+            <br>
+            <a href="/listings/<%= listing.id %>/edit" style="color: #007bff; text-decoration: none; font-weight: bold;">Düzenle</a> |
+            <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?')" style="color: #e91e63; text-decoration: none; font-weight: bold;">Sil</a>
+          </li>
+        <% }); %>
+      </ul>
+      <a href="/listings/add" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni İlan Ekle</a>
+    <% } else { %>
+      <p>Henüz bir ilan eklemediniz.</p>
+      <a href="/listings/add" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni İlan Ekle</a>
+    <% } %>
+  </div>
+  
+
+  <div id="certificates-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
+    <h2>Sertifikalarınız</h2>
+    <% if (certificates.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% certificates.forEach(certificate => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <h3 style="font-size: 1.2rem; margin-bottom: 10px;"><%= certificate.certificate_name %></h3>
+            <img src="<%= certificate.certificate_path %>" alt="<%= certificate.certificate_name %>" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+            <a href="/certificates/<%= certificate.id %>/delete" style="color: #e91e63; text-decoration: none; font-weight: bold;">Sil</a>
+          </li>
+        <% }); %>
+      </ul>
+      <a href="/certificates/upload" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni Sertifika Ekle</a>
+    <% } else { %>
+      <p>Henüz sertifikanız yok.</p>
+      <a href="/certificates/upload" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni Sertifika Ekle</a>
+
+    <% } %>
+  </div>
+  
+
+  <div id="cart-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
+    <h2>Sepetiniz</h2>
+    <% if (cartItems.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% cartItems.forEach(item => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <strong style="font-size: 1.2rem; margin-bottom: 10px;"><%= item.title %></strong>
+            <p style="margin-bottom: 10px;"><%= item.quantity %> adet - <%= item.price * item.quantity %> TL</p>
+            <img src="<%= item.image_path %>" alt="<%= item.title %>" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+            
+            <!-- Sepetten Çıkarma Butonu -->
+            <form method="POST" action="/cart/remove">
+              <input type="hidden" name="cartId" value="<%= item.id %>">
+              <button type="submit" style="background-color: #f44336; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1rem; text-align: center; width: 100%;">Sepetten Çıkar</button>
+            </form>
+          </li>
+        <% }); %>
+      </ul>
+      <a href="/orders/checkout" style="display: inline-block; margin-top: 20px; background-color: #007bff; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 1rem; text-align: center;">Ödeme Sayfasına Git</a>
+    <% } else { %>
+      <p>Sepetinizde ürün bulunmamaktadır.</p>
+    <% } %>
+  </div>
+  
+
+  <div id="orders-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
+    <h2>Siparişleriniz</h2>
+    <% if (orders.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% orders.forEach(order => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <strong style="font-size: 1.2rem; margin-bottom: 10px;">Sipariş Numarası: <%= order.id %></strong>
+            <p style="margin-bottom: 10px;"><strong>Ödeme Yöntemi:</strong> <%= order.payment_method %></p>
+            <p style="margin-bottom: 10px;"><strong>Gönderim Adresi:</strong> <%= order.shipping_address %></p>
+            <p style="margin-bottom: 10px;"><strong>Durum:</strong> <%= order.order_status %></p>
+            <p style="margin-bottom: 10px;"><strong>Toplam Fiyat:</strong> <%= order.total_price %> TL</p>
+            <img src="<%= order.image_path %>" alt="<%= order.title %>" style="max-width: 100%; height: auto; margin-bottom: 15px;">
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>Henüz siparişiniz yok.</p>
+    <% } %>
+  </div>
+  
+
+  <div id="messages-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
+    <h2>Mesajlarınız</h2>
+    
+    <h3>Gelen Mesajlar</h3>
+    <% if (receivedMessages.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% receivedMessages.forEach(message => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <p style="margin-bottom: 10px;"><strong>Mesaj:</strong> <%= message.content %></p>
+            <p style="margin-bottom: 10px;"><strong>Gönderen:</strong> <%= message.sender_username %></p>
+            <p style="margin-bottom: 10px;"><strong>Tarih:</strong> <%= message.sent_at %></p>
+            
+            <!-- Cevap Ver Butonu -->
+            <button class="reply-button" data-message-id="<%= message.id %>" style="background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Cevapla</button>
+  
+            <!-- Cevap Formu -->
+            <div class="reply-form" id="reply-form-<%= message.id %>" style="display: none; margin-top: 10px;">
+              <form method="POST" action="/messages/reply">
+                <input type="hidden" name="message_id" value="<%= message.id %>">
+                <textarea name="content" placeholder="Cevabınızı yazın..." required style="width: 100%; height: 100px; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+                <button type="submit" style="background-color: #4CAF50; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer;">Gönder</button>
+              </form>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>Henüz gelen mesajınız yok.</p>
+    <% } %>
+  
+    <h3>Giden Mesajlar</h3>
+    <% if (sentMessages.length > 0) { %>
+      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+        <% sentMessages.forEach(message => { %>
+          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+            <p style="margin-bottom: 10px;"><strong>Mesaj:</strong> <%= message.content %></p>
+            <p style="margin-bottom: 10px;"><strong>Alıcı:</strong> <%= message.receiver_username %></p>
+            <p style="margin-bottom: 10px;"><strong>Tarih:</strong> <%= message.sent_at %></p>
+          </li>
+        <% }); %>
+      </ul>
+    <% } else { %>
+      <p>Henüz giden mesajınız yok.</p>
+    <% } %>
+  </div>
+  
 
 
-<hr>
+  <div id="profile-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 600px;">
+    <h2 style="text-align: center; margin-bottom: 20px;">Profil Bilgilerinizi Güncelleyin</h2>
+    <form method="POST" action="/user/update-profile" style="display: flex; flex-direction: column; gap: 15px;">
+      <label for="first_name" style="font-size: 16px; font-weight: bold;">Ad:</label>
+      <input type="text" id="first_name" name="first_name" value="<%= user.first_name %>" required style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      
+      <label for="last_name" style="font-size: 16px; font-weight: bold;">Soyad:</label>
+      <input type="text" id="last_name" name="last_name" value="<%= user.last_name %>" required style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      
+      <label for="gender" style="font-size: 16px; font-weight: bold;">Cinsiyet:</label>
+      <select id="gender" name="gender" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Erkek</option>
+        <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Kadın</option>
+        <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Diğer</option>
+      </select>
+      
+      <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Güncelle</button>
+    </form>
+  </div>
+  
 
-<h2>Senin İlanların</h2>
-<% if (userListings.length > 0) { %>
-  <ul>
-    <% userListings.forEach(listing => { %>
-      <li>
-        <strong><%= listing.title %></strong> - <%= listing.price %> TL
-        <br>
-        <a href="/listings/<%= listing.id %>/edit">Düzenle</a> |
-        <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?')">Sil</a>
-      </li>
-    <% }); %>
-  </ul>
-<% } else { %>
-  <p>Henüz bir ilan eklemediniz.</p>
-<% } %>
+<script>
+    // Sayfa yüklendiğinde Tüm İlanlar sekmesi varsayılan olarak açılacak
+    document.addEventListener("DOMContentLoaded", function() {
+      const allListingsTab = document.getElementById("all-listings-tab");
+      const myListingsTab = document.getElementById("my-listings-tab");
+      const certificatesTab = document.getElementById("certificates-tab");
+      const cartTab = document.getElementById("cart-tab");
+      const ordersTab = document.getElementById("orders-tab");
+      const messagesTab = document.getElementById("messages-tab");
+      const profileTab = document.getElementById("profile-tab");  // Profil sekmesi ekleniyor
+  
+      const allListingsContent = document.getElementById("all-listings-content");
+      const myListingsContent = document.getElementById("my-listings-content");
+      const certificatesContent = document.getElementById("certificates-content");
+      const cartContent = document.getElementById("cart-content");
+      const ordersContent = document.getElementById("orders-content");
+      const messagesContent = document.getElementById("messages-content");
+      const profileContent = document.getElementById("profile-content");  // Profil içeriği ekleniyor
+  
+      // Sekmelere tıklandığında içerik gösterme
+      allListingsTab.addEventListener('click', function() {
+        showContent(allListingsContent);
+      });
+  
+      myListingsTab.addEventListener('click', function() {
+        showContent(myListingsContent);
+      });
+  
+      certificatesTab.addEventListener('click', function() {
+        showContent(certificatesContent);
+      });
+  
+      cartTab.addEventListener('click', function() {
+        showContent(cartContent);
+      });
+  
+      ordersTab.addEventListener('click', function() {
+        showContent(ordersContent);
+      });
+  
+      messagesTab.addEventListener('click', function() {
+        showContent(messagesContent);
+      });
+  
+      profileTab.addEventListener('click', function() {  // Profil sekmesine tıklama olayını ekliyoruz
+        showContent(profileContent);
+      });
+  
+      // İçeriği göstermek için fonksiyon
+      function showContent(content) {
+        // Tüm içerikleri gizle
+        const contents = document.querySelectorAll('.content-section');
+        contents.forEach(function(item) {
+          item.style.display = 'none';
+        });
+  
+        // İlgili içeriği göster
+        content.style.display = 'block';
+      }
+  
+      // Sayfa yüklendiğinde Tüm İlanlar içerğini göster
+      showContent(allListingsContent);
+    });
+</script>
+<script>
+    // Mesaj Gönder Butonu ile Mesaj Formunu Gösterme
+    document.querySelectorAll('.message-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const listingId = this.getAttribute('data-listing-id');
+        const messageForm = document.getElementById(`message-form-${listingId}`);
+        messageForm.style.display = messageForm.style.display === 'none' ? 'block' : 'none';
+      });
+    });
 
-<h2>Sertifikalarınız</h2>
-<% if (certificates.length > 0) { %>
-  <ul>
-    <% certificates.forEach(certificate => { %>
-      <li>
-        <h3><%= certificate.certificate_name %></h3>
-        <img src="<%= certificate.certificate_path %>" alt="<%= certificate.certificate_name %>" />
-        <a href="/certificates/<%= certificate.id %>/delete">Sil</a>
-      </li>
-    <% }); %>
-  </ul>
-<% } else { %>
-  <p>Henüz sertifikanız yok.</p>
-  <a href="/certificates/upload">Yeni Sertifika Ekle</a>
-<% } %>
-<h2>Sepetiniz</h2>
-<% if (cartItems.length > 0) { %>
-  <ul>
-    <% cartItems.forEach(item => { %>
-      <li>
-        <strong><%= item.title %></strong> - <%= item.quantity %> adet - <%= item.price * item.quantity %> TL
-        <br>
-        <img src="<%= item.image_path %>" alt="<%= item.title %>" style="max-width: 200px;">
-        
-        <!-- Sepetten Çıkarma Butonu -->
-        <form method="POST" action="/cart/remove">
-          <input type="hidden" name="cartId" value="<%= item.id %>">
-          <button type="submit">Sepetten Çıkar</button>
-        </form>
-      </li>
-    <% }); %>
-  </ul>
-  <a href="/checkout">Ödeme Sayfasına Git</a>
-<% } else { %>
-  <p>Sepetinizde ürün bulunmamaktadır.</p>
-<% } %>
 
-
-<h2>Mesajlarınız</h2>
-<% if (messages.length > 0) { %>
-  <ul>
-    <% messages.forEach(message => { %>
-      <li>
-        <p><%= message.content %></p>
-        <p>Gönderen: <%= message.sender_username %></p>
-        <p>Tarih: <%= message.sent_at %></p>
-      </li>
-    <% }); %>
-  </ul>
-<% } else { %>
-  <p>Henüz mesajınız yok.</p>
-<% } %>
-
+     // Cevap Ver Butonu ile Cevap Formunu Gösterme
+  document.querySelectorAll('.reply-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const messageId = this.getAttribute('data-message-id');
+      const replyForm = document.getElementById(`reply-form-${messageId}`);
+      replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+    });
+  });
+  </script>
 <%- include('partials/footer') %>
+</body>
+</html>
+
+
+

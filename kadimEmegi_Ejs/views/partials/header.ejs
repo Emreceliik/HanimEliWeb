@@ -1,27 +1,52 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %> - Kadın Emeği</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Ana Sayfa</a></li>
-                <% if (user) { %>
-                    <li><a href="/user/dashboard">Dashboard</a></li>
-                    <li><a href="/auth/logout">Çıkış Yap</a></li>
-                <% } else { %>
-                    <li><a href="/auth/login">Giriş Yap</a></li>
-                    <li><a href="/auth/register">Kayıt Ol</a></li>
-                <% } %>
+<header>
+    <nav>
+        <ul>
+            <li><a href="/">Ana Sayfa</a></li>
+            <% if (user) { %>
+                <li><a href="/user/dashboard">Dashboard</a></li>
+                <li><a href="/auth/logout">Çıkış Yap</a></li>
+            <% } else { %>
+                <li><a href="/auth/login">Giriş Yap</a></li>
+                <li><a href="/auth/register">Kayıt Ol</a></li>
+            <% } %>
 
-                <% if (user && user.role === 'admin') { %>
-                    <li><a href="/admin/dashboard">Admin Paneli</a></li>
-                <% } %>
-            </ul>
-        </nav>
-    </header>
+            <% if (user && user.role === 'admin') { %>
+              
+            <% } %>
+        </ul>
+    </nav>
+</header>
+
+<!-- styles for this partial -->
+<style>
+    header {
+        background-color: #f3a8b4; /* Soft pink */
+        padding: 15px 0;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    nav ul {
+        list-style: none;
+        padding: 0;
+        text-align: center;
+    }
+
+    nav ul li {
+        display: inline-block;
+        margin: 0 15px;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: white;
+        font-size: 18px;
+    }
+
+    nav ul li a:hover {
+        color: #e9b8cc;
+    }
+</style>

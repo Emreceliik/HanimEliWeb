@@ -66,31 +66,42 @@ router.get('/:id/edit', (req, res) => {
 router.post('/:id/edit', upload.single('image'), (req, res) => {
   const { title, description, category, price } = req.body;
   const listingId = req.params.id;
-  const imagePath = req.file ? '/uploads/' + req.file.filename : null;
+  const userId = req.session.user.id;
 
-  // Güncellenen resim yolu varsa, mevcut resmi güncelle
-  const updateQuery = `
-    UPDATE listings
-    SET title = ?, description = ?, category = ?, price = ?, image_path = ?
-    WHERE id = ? AND user_id = ?
-  `;
-  const updateValues = [
-    title,
-    description,
-    category,
-    price,
-    imagePath || null, // Eğer resim yüklenmemişse null bırak
-    listingId,
-    req.session.user.id,
-  ];
-
-  db.query(updateQuery, updateValues, (err) => {
+  // Mevcut ilanı veritabanından sorgulayıp, eski resim yolunu alalım
+  const getCurrentImageQuery = 'SELECT image_path FROM listings WHERE id = ? AND user_id = ?';
+  db.query(getCurrentImageQuery, [listingId, userId], (err, result) => {
     if (err) throw err;
-    res.redirect('/user/dashboard');
+    
+    // Mevcut resim varsa, eski resim yolunu kullan
+    const currentImagePath = result.length > 0 ? result[0].image_path : null;
+    
+    // Yeni resim yolu, eğer varsa, mevcut resim yoluyla değiştirilir
+    const imagePath = req.file ? '/uploads/' + req.file.filename : currentImagePath;
+
+    // İlanı güncelle
+    const updateQuery = `
+      UPDATE listings
+      SET title = ?, description = ?, category = ?, price = ?, image_path = ?
+      WHERE id = ? AND user_id = ?
+    `;
+    const updateValues = [
+      title,
+      description,
+      category,
+      price,
+      imagePath,
+      listingId,
+      userId
+    ];
+
+    db.query(updateQuery, updateValues, (err) => {
+      if (err) throw err;
+      res.redirect('/user/dashboard');
+    });
   });
 });
 
-// İlan Silme İşlemi (GET)
 router.get('/:id/delete', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/auth/login');
@@ -98,15 +109,25 @@ router.get('/:id/delete', (req, res) => {
 
   const listingId = req.params.id;
 
-  // İlanı veritabanından sil
-  db.query(
-    'DELETE FROM listings WHERE id = ? AND user_id = ?',
-    [listingId, req.session.user.id],
-    (err) => {
+  // İlk olarak, bu ilana ait cart ve orders verilerini silmek için:
+  const deleteOrdersQuery = 'DELETE FROM orders WHERE cart_id IN (SELECT id FROM cart WHERE listing_id = ?)';
+  db.query(deleteOrdersQuery, [listingId], (err) => {
+    if (err) throw err;
+
+    // Şimdi, cart kaydını silebiliriz
+    const deleteCartQuery = 'DELETE FROM cart WHERE listing_id = ?';
+    db.query(deleteCartQuery, [listingId], (err) => {
       if (err) throw err;
-      res.redirect('/user/dashboard');
-    }
-  );
+
+      // Son olarak, listing kaydını silebiliriz
+      const deleteListingQuery = 'DELETE FROM listings WHERE id = ? AND user_id = ?';
+      db.query(deleteListingQuery, [listingId, req.session.user.id], (err) => {
+        if (err) throw err;
+        res.redirect('/user/dashboard'); // Dashboard'a yönlendir
+      });
+    });
+  });
 });
+
 
 module.exports = router;
