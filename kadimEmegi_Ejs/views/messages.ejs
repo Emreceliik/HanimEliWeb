@@ -1,0 +1,17 @@
+<%- include('partials/header', { title: 'Mesajlar' }) %>
+<h1>Mesajlarınız</h1>
+
+<% if (messages.length > 0) { %>
+  <ul>
+    <% messages.forEach(message => { %>
+      <li>
+        <p><strong><%= message.sender_username || message.receiver_username %>:</strong> <%= message.content %></p>
+        <p><%= message.sent_at %></p>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>Henüz mesajınız yok.</p>
+<% } %>
+
+<%- include('partials/footer') %>

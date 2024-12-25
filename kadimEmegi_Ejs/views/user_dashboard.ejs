@@ -11,11 +11,14 @@
                 <p>Fiyat: <%= listing.price %> TL</p>
                 <p><%= listing.category %></p>
                 <p><%= listing.approved ? 'Onaylı' : 'Onaysız' %></p>
+                <a href="/listings/<%= listing.id %>/edit">Düzenle</a>
+                <a href="/listings/<%= listing.id %>/delete">Sil</a>
             </li>
         <% }) %>
     </ul>
 <% } else { %>
     <p>Henüz ilanınız yok.</p>
+    <a href="/listings/add">Yeni İlan Ekle</a>
 <% } %>
 
 <h2>Sertifikalarınız</h2>
@@ -25,11 +28,13 @@
             <li>
                 <h3><%= certificate.certificate_name %></h3>
                 <img src="<%= certificate.certificate_path %>" alt="<%= certificate.certificate_name %>" />
+                <a href="/certificates/<%= certificate.id %>/delete">Sil</a>
             </li>
         <% }) %>
     </ul>
 <% } else { %>
     <p>Henüz sertifikanız yok.</p>
+    <a href="/certificates/upload">Yeni Sertifika Ekle</a>
 <% } %>
 
 <h2>Sepetiniz</h2>
@@ -39,11 +44,14 @@
             <li>
                 <p>İlan Başlığı: <%= item.title %></p>
                 <p>Adet: <%= item.quantity %></p>
+                <a href="/cart/<%= item.id %>/remove">Sepetten Çıkar</a>
             </li>
         <% }) %>
     </ul>
+    <a href="/cart/checkout">Ödeme Yap</a>
 <% } else { %>
     <p>Sepetinizde ürün bulunmamaktadır.</p>
+    <a href="/cart">Ürünleri Görüntüle</a>
 <% } %>
 
 <h2>Mesajlarınız</h2>
@@ -53,11 +61,13 @@
             <li>
                 <p><%= message.content %></p>
                 <p><%= message.sent_at %></p>
+                <a href="/messages/<%= message.id %>/delete">Mesajı Sil</a>
             </li>
         <% }) %>
     </ul>
 <% } else { %>
     <p>Henüz mesajınız yok.</p>
+    <a href="/messages">Yeni Mesaj Gönder</a>
 <% } %>
 
 <%- include('partials/footer') %>
