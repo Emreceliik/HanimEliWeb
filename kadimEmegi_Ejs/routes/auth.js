@@ -44,4 +44,15 @@ router.post('/register', (req, res) => {
     );
 });
 
+// Çıkış İşlemi (Logout)
+router.get('/logout', (req, res) => {
+    // Oturumu sonlandır
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).send('Çıkış işlemi sırasında hata oluştu.');
+        }
+        res.redirect('/auth/login');
+    });
+});
+
 module.exports = router;
