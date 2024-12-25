@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<h1>Kayıt Ol</h1>
+<form method="POST" action="/auth/register">
+  <input type="text" name="username" placeholder="Kullanıcı Adı" required />
+  <input type="password" name="password" placeholder="Şifre" required />
+  <input type="text" name="first_name" placeholder="İsim" required />
+  <input type="text" name="last_name" placeholder="Soyisim" required />
+  <select name="gender" required>
+    <option value="male">Erkek</option>
+    <option value="female">Kadın</option>
+    <option value="other">Diğer</option>
+  </select>
+  <select name="role">
+    <option value="user">Kullanıcı</option>
+    <option value="admin">Admin</option>
+  </select>
+  <button type="submit">Kayıt Ol</button>
+</form>
+<%- include('partials/footer') %>

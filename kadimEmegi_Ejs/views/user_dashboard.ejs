@@ -1,0 +1,63 @@
+<%- include('partials/header', { title: 'Kullanıcı Dashboard' }) %>
+<h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
+
+<h2>İlanlarınız</h2>
+<% if (listings.length > 0) { %>
+    <ul>
+        <% listings.forEach(listing => { %>
+            <li>
+                <h3><%= listing.title %></h3>
+                <p><%= listing.description %></p>
+                <p>Fiyat: <%= listing.price %> TL</p>
+                <p><%= listing.category %></p>
+                <p><%= listing.approved ? 'Onaylı' : 'Onaysız' %></p>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>Henüz ilanınız yok.</p>
+<% } %>
+
+<h2>Sertifikalarınız</h2>
+<% if (certificates.length > 0) { %>
+    <ul>
+        <% certificates.forEach(certificate => { %>
+            <li>
+                <h3><%= certificate.certificate_name %></h3>
+                <img src="<%= certificate.certificate_path %>" alt="<%= certificate.certificate_name %>" />
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>Henüz sertifikanız yok.</p>
+<% } %>
+
+<h2>Sepetiniz</h2>
+<% if (cartItems.length > 0) { %>
+    <ul>
+        <% cartItems.forEach(item => { %>
+            <li>
+                <p>İlan Başlığı: <%= item.title %></p>
+                <p>Adet: <%= item.quantity %></p>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>Sepetinizde ürün bulunmamaktadır.</p>
+<% } %>
+
+<h2>Mesajlarınız</h2>
+<% if (messages.length > 0) { %>
+    <ul>
+        <% messages.forEach(message => { %>
+            <li>
+                <p><%= message.content %></p>
+                <p><%= message.sent_at %></p>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>Henüz mesajınız yok.</p>
+<% } %>
+
+<%- include('partials/footer') %>

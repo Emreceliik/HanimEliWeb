@@ -1,0 +1,8 @@
+<%- include('partials/header') %>
+<h1>Mesaj Gönder</h1>
+<form method="POST" action="/messages/send">
+  <input type="text" name="receiver_id" placeholder="Alıcı ID" required />
+  <textarea name="content" placeholder="Mesajınızı yazın" required></textarea>
+  <button type="submit">Gönder</button>
+</form>
+<%- include('partials/footer') %>

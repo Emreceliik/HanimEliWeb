@@ -1,0 +1,9 @@
+<!-- views/login.ejs -->
+<%- include('partials/header') %>
+<h1>Giriş Yap</h1>
+<form method="POST" action="/auth/login">
+  <input type="text" name="username" placeholder="Kullanıcı Adı" required />
+  <input type="password" name="password" placeholder="Şifre" required />
+  <button type="submit">Giriş Yap</button>
+</form>
+<%- include('partials/footer') %>
