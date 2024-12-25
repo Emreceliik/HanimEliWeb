@@ -2,11 +2,11 @@
 <h1>Ödeme ve Sipariş</h1>
 
 <% if (cartItems.length > 0) { %>
-  <h3>Sepetinizdeki Ürünler:</h3>
-  <ul>
+ <br>
+  <ul class="cart-items-list">
     <% let totalPrice = 0; %>
     <% cartItems.forEach(item => { %>
-      <li>
+      <li class="cart-item">
         <strong><%= item.title %></strong> - <%= item.quantity %> adet - <%= item.price %> TL
         <br>
         <strong>Toplam: <%= item.price * item.quantity %> TL</strong>
@@ -17,17 +17,105 @@
 
   <p><strong>Toplam Tutar: <%= totalPrice %> TL</strong></p>
 
-  <form method="POST" action="/orders/checkout">
-    <input type="text" name="shipping_address" placeholder="Adresiniz" required />
-    <select name="payment_method" required>
+  <form method="POST" action="/orders/checkout" class="checkout-form">
+    <input type="text" name="shipping_address" placeholder="Adresiniz" required class="input-field" />
+    <select name="payment_method" required class="input-field">
       <option value="credit_card">Kredi Kartı</option>
       <option value="paypal">PayPal</option>
       <option value="cash_on_delivery">Kapıda Ödeme</option>
     </select>
-    <button type="submit">Siparişi Tamamla</button>
+    <button type="submit" class="submit-btn">Siparişi Tamamla</button>
   </form>
 <% } else { %>
   <p>Sepetinizde ürün bulunmamaktadır.</p>
 <% } %>
 
 <%- include('../partials/footer') %>
+
+<!-- Head Style CSS -->
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    text-align: center;
+    color: #4a90e2;
+    margin-top: 20px;
+  }
+
+  h3 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .cart-items-list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .cart-item {
+    background-color: #ffffff;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .cart-item strong {
+    font-size: 16px;
+    color: #333;
+  }
+
+  .cart-item br {
+    margin-bottom: 5px;
+  }
+
+  .checkout-form {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    background-color: #4a90e2;
+    color: #ffffff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .submit-btn:hover {
+    background-color: #357ABD;
+  }
+
+  p {
+    text-align: center;
+    font-size: 16px;
+    color: #888;
+  }
+
+  .cart-item, .checkout-form {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  
+</style>

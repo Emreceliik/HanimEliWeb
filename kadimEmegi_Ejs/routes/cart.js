@@ -44,14 +44,28 @@ router.get('/', (req, res) => {
 router.post('/remove', (req, res) => {
   const cartId = req.body.cartId;  // Formdan gelen cartId
 
-  db.query(
-    'DELETE FROM cart WHERE id = ?',
-    [cartId],
-    (err) => {
-      if (err) throw err;
-      res.redirect('/cart'); // Sepet sayfasına yönlendir
+  // İlk olarak orders tablosundaki ilgili kaydı silelim
+  const deleteOrderQuery = 'DELETE FROM orders WHERE cart_id = ?';
+  db.query(deleteOrderQuery, [cartId], (err) => {
+    if (err) {
+      console.error('Orders tablosu silinirken hata:', err);
+      return res.status(500).send('Bir hata oluştu');
     }
-  );
+
+    // Ardından cart tablosundaki ilgili ürünü silelim
+    const deleteCartQuery = 'DELETE FROM cart WHERE id = ?';
+    db.query(deleteCartQuery, [cartId], (err) => {
+      if (err) {
+        console.error('Cart tablosu silinirken hata:', err);
+        return res.status(500).send('Bir hata oluştu');
+      }
+
+      // Silme işlemi başarılıysa, kullanıcıyı sepet sayfasına yönlendirelim
+      res.redirect('/user/dashboard');
+    });
+  });
 });
+
+
 
 module.exports = router;
