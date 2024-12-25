@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<h1>İlan Ekle</h1>
+<form method="POST" action="/listings/add" enctype="multipart/form-data">
+  <input type="text" name="title" placeholder="İlan Başlığı" required />
+  <textarea name="description" placeholder="Açıklama" required></textarea>
+  <select name="category" required>
+    <option value="ev_yemegi">Ev Yemeği</option>
+    <option value="orgu">Örgü</option>
+    <option value="boncuk">Boncuk</option>
+    <option value="canta">Çanta</option>
+    <option value="diger">Diğer</option>
+  </select>
+  <input type="number" name="price" placeholder="Fiyat" required />
+  <input type="file" name="image" />
+  <button type="submit">İlanı Yayınla</button>
+</form>
+<%- include('partials/footer') %>
