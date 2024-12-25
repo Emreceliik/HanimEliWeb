@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db');
 const path = require('path');
 const multer = require('multer');
+const { title } = require('process');
 
 // Multer ayarları (sertifika yükleme)
 const storage = multer.diskStorage({
@@ -20,7 +21,7 @@ router.get('/upload', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/auth/login');
   }
-  res.render('certificates/upload', { user: req.session.user });
+  res.render('certificates/upload', {title: 'Sertifika', user: req.session.user });
 });
 
 // Sertifika Yükleme İşlemi

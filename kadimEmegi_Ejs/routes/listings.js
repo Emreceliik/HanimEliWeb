@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db');
 const path = require('path');
 const multer = require('multer');
+const { title } = require('process');
 
 // Multer ayarları (resim yükleme)
 const storage = multer.diskStorage({
@@ -20,7 +21,7 @@ router.get('/add', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/auth/login');
   }
-  res.render('listings/add', { user: req.session.user });
+  res.render('listings/add', {title: 'Ana Sayfa', user: req.session.user });
 });
 
 // İlan Ekleme İşlemi
