@@ -15,12 +15,13 @@ router.get('/dashboard', (req, res) => {
 
   // Tüm ilanlar (onaylı olanlar)
   const allListingsQuery = `
-    SELECT l.*, u.username 
-    FROM listings l 
-    JOIN users u ON l.user_id = u.id 
-    WHERE l.approved = 1 
-    ORDER BY l.created_at DESC
-  `;
+  SELECT l.*, u.username 
+  FROM listings l 
+  JOIN users u ON l.user_id = u.id 
+  WHERE l.approved = 1 
+  ORDER BY l.created_at DESC
+`;
+
 
   // Kullanıcının sertifikaları
   const certificatesQuery = 'SELECT * FROM certificates WHERE user_id = ?';

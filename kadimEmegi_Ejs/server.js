@@ -21,6 +21,7 @@ const PORT = 3000;
 // Set EJS as the templating engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static('public'));
 
 // Middleware setup
 app.use(bodyParser.urlencoded({ extended: true }));
