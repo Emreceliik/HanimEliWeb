@@ -10,6 +10,10 @@
         <br>
         <small>Ekleyen: <%= listing.username %></small>
         <br>
+        <small>Kategori: <%= listing.category %></small>
+        <br>
+        <small>Açıklama: <%= listing.description %></small>
+        <br>
         <img src="<%= listing.image_path %>" alt="<%= listing.title %>" style="max-width: 200px;">
         
         <!-- Sepete Ekle Butonu -->
@@ -24,6 +28,7 @@
 <% } else { %>
   <p>Henüz bir ilan eklenmedi.</p>
 <% } %>
+
 
 <hr>
 
