@@ -1,8 +1,42 @@
-<%- include('partials/header', { title: 'Admin Paneli' }) %>
+<%- include('partials/header', { title: 'Admin Dashboard' }) %>
 
-<h1>Admin Paneli</h1>
-<p>Burada, kullanıcıları yönetebilir ve onaylanmamış ilanları görebilirsin.</p>
 
-<!-- Admin'e özel içerik -->
+<div class="container mt-5">
+    <h1>Admin Dashboard</h1>
+    <h2>Onay Bekleyen İlanlar</h2>
+    <% if (pendingListings.length > 0) { %>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Başlık</th>
+                    <th>Kategori</th>
+                    <th>Fiyat</th>
+                    <th>Açıklama</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% pendingListings.forEach(listing => { %>
+                    <tr>
+                        <td><%= listing.title %></td>
+                        <td><%= listing.category %></td>
+                        <td><%= listing.price %></td>
+                        <td><%= listing.description %></td>
+                        <td>
+                            <form action="/admin/approve-listing/<%= listing.id %>" method="POST" class="d-inline">
+                                <button class="btn btn-success">Onayla</button>
+                            </form>
+                            <form action="/admin/delete-listing/<%= listing.id %>" method="POST" class="d-inline">
+                                <button class="btn btn-danger">Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>Onay bekleyen ilan bulunmamaktadır.</p>
+    <% } %>
+</div>
 
 <%- include('partials/footer') %>
