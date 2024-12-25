@@ -13,8 +13,8 @@ router.get('/dashboard', (req, res) => {
   // Kullanıcının ilanları
   const userListingsQuery = 'SELECT * FROM listings WHERE user_id = ?';
 
-  // Tüm ilanlar (onaylı olanlar)
-  const allListingsQuery = `
+// Tüm ilanlar (onaylı olanlar)
+const allListingsQuery = `
   SELECT l.*, u.username 
   FROM listings l 
   JOIN users u ON l.user_id = u.id 
