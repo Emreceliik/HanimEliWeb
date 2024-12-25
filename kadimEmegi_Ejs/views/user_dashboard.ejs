@@ -1,74 +1,87 @@
 <%- include('partials/header', { title: 'Kullanıcı Dashboard' }) %>
 <h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
 
-<h2>İlanlarınız</h2>
-<% if (listings.length > 0) { %>
-    <ul>
-        <% listings.forEach(listing => { %>
-            <li>
-                <h3><%= listing.title %></h3>
-                <p><%= listing.description %></p>
-                <p>Fiyat: <%= listing.price %> TL</p>
-                <p><%= listing.category %></p>
-                <p><%= listing.approved ? 'Onaylı' : 'Onaysız' %></p>
-                <a href="/listings/<%= listing.id %>/edit">Düzenle</a>
-                <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinizden emin misiniz?')">İlanı Sil</a>
-
-            </li>
-        <% }) %>
-    </ul>
+<h2>Tüm İlanlar</h2>
+<% if (allListings.length > 0) { %>
+  <ul>
+    <% allListings.forEach(listing => { %>
+      <li>
+        <strong><%= listing.title %></strong> - <%= listing.price %> TL
+        <br>
+        <small>Ekleyen: <%= listing.username %></small>
+        <br>
+        <img src="<%= listing.image_path %>" alt="<%= listing.title %>" style="max-width: 200px;">
+      </li>
+    <% }); %>
+  </ul>
 <% } else { %>
-    <p>Henüz ilanınız yok.</p>
-    <a href="/listings/add">Yeni İlan Ekle</a>
+  <p>Henüz bir ilan eklenmedi.</p>
+<% } %>
+
+<hr>
+
+<h2>Senin İlanların</h2>
+<% if (userListings.length > 0) { %>
+  <ul>
+    <% userListings.forEach(listing => { %>
+      <li>
+        <strong><%= listing.title %></strong> - <%= listing.price %> TL
+        <br>
+        <a href="/listings/<%= listing.id %>/edit">Düzenle</a> |
+        <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?')">Sil</a>
+      </li>
+    <% }); %>
+  </ul>
+<% } else { %>
+  <p>Henüz bir ilan eklemediniz.</p>
 <% } %>
 
 <h2>Sertifikalarınız</h2>
 <% if (certificates.length > 0) { %>
-    <ul>
-        <% certificates.forEach(certificate => { %>
-            <li>
-                <h3><%= certificate.certificate_name %></h3>
-                <img src="<%= certificate.certificate_path %>" alt="<%= certificate.certificate_name %>" />
-                <a href="/certificates/<%= certificate.id %>/delete">Sil</a>
-            </li>
-        <% }) %>
-    </ul>
+  <ul>
+    <% certificates.forEach(certificate => { %>
+      <li>
+        <h3><%= certificate.certificate_name %></h3>
+        <img src="<%= certificate.certificate_path %>" alt="<%= certificate.certificate_name %>" />
+        <a href="/certificates/<%= certificate.id %>/delete">Sil</a>
+      </li>
+    <% }); %>
+  </ul>
 <% } else { %>
-    <p>Henüz sertifikanız yok.</p>
-    <a href="/certificates/upload">Yeni Sertifika Ekle</a>
+  <p>Henüz sertifikanız yok.</p>
+  <a href="/certificates/upload">Yeni Sertifika Ekle</a>
 <% } %>
 
 <h2>Sepetiniz</h2>
 <% if (cartItems.length > 0) { %>
-    <ul>
-        <% cartItems.forEach(item => { %>
-            <li>
-                <p>İlan Başlığı: <%= item.title %></p>
-                <p>Adet: <%= item.quantity %></p>
-                <a href="/cart/<%= item.id %>/remove">Sepetten Çıkar</a>
-            </li>
-        <% }) %>
-    </ul>
-    <a href="/cart/checkout">Ödeme Yap</a>
+  <ul>
+    <% cartItems.forEach(item => { %>
+      <li>
+        <p>İlan Başlığı: <%= item.title %></p>
+        <p>Adet: <%= item.quantity %></p>
+        <p>Fiyat: <%= item.price * item.quantity %> TL</p>
+        <a href="/cart/<%= item.id %>/remove">Sepetten Çıkar</a>
+      </li>
+    <% }); %>
+  </ul>
+  <a href="/cart/checkout">Ödeme Yap</a>
 <% } else { %>
-    <p>Sepetinizde ürün bulunmamaktadır.</p>
-    <a href="/cart">Ürünleri Görüntüle</a>
+  <p>Sepetinizde ürün bulunmamaktadır.</p>
 <% } %>
 
 <h2>Mesajlarınız</h2>
 <% if (messages.length > 0) { %>
-    <ul>
-        <% messages.forEach(message => { %>
-            <li>
-                <p><%= message.content %></p>
-                <p><%= message.sent_at %></p>
-                <a href="/messages/<%= message.id %>/delete">Mesajı Sil</a>
-            </li>
-        <% }) %>
-    </ul>
+  <ul>
+    <% messages.forEach(message => { %>
+      <li>
+        <p><%= message.content %></p>
+        <p>Gönderen: <%= message.sender_username %></p>
+        <p>Tarih: <%= message.sent_at %></p>
+      </li>
+    <% }); %>
+  </ul>
 <% } else { %>
-    <p>Henüz mesajınız yok.</p>
-    <a href="/messages">Yeni Mesaj Gönder</a>
+  <p>Henüz mesajınız yok.</p>
 <% } %>
 
 <%- include('partials/footer') %>

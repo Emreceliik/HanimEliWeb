@@ -2,41 +2,77 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// Kullanıcı Paneli (Dashboard)
+// Kullanıcı Dashboard
 router.get('/dashboard', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/auth/login');
-    }
-    
-    const userId = req.session.user.id;
+  if (!req.session.user) {
+    return res.redirect('/auth/login');
+  }
 
-    // Kullanıcıya ait ilanlar
-    db.query('SELECT * FROM listings WHERE user_id = ?', [userId], (err, listings) => {
+  const userId = req.session.user.id;
+
+  // Kullanıcının ilanları
+  const userListingsQuery = 'SELECT * FROM listings WHERE user_id = ?';
+
+  // Tüm ilanlar (onaylı olanlar)
+  const allListingsQuery = `
+    SELECT l.*, u.username 
+    FROM listings l 
+    JOIN users u ON l.user_id = u.id 
+    WHERE l.approved = 1 
+    ORDER BY l.created_at DESC
+  `;
+
+  // Kullanıcının sertifikaları
+  const certificatesQuery = 'SELECT * FROM certificates WHERE user_id = ?';
+
+  // Kullanıcının sepetindeki ürünler
+  const cartItemsQuery = `
+    SELECT c.*, l.title, l.price 
+    FROM cart c 
+    JOIN listings l ON c.listing_id = l.id 
+    WHERE c.user_id = ?
+  `;
+
+  // Kullanıcının mesajları (gönderilen ve alınan)
+  const messagesQuery = `
+    SELECT m.*, u.username AS sender_username 
+    FROM messages m 
+    JOIN users u ON m.sender_id = u.id 
+    WHERE m.sender_id = ? OR m.receiver_id = ?
+    ORDER BY m.sent_at DESC
+  `;
+
+  // Tüm sorguların paralel çalıştırılması
+  db.query(userListingsQuery, [userId], (err, userListings) => {
+    if (err) throw err;
+
+    db.query(allListingsQuery, (err, allListings) => {
+      if (err) throw err;
+
+      db.query(certificatesQuery, [userId], (err, certificates) => {
         if (err) throw err;
 
-        // Kullanıcıya ait sertifikalar
-        db.query('SELECT * FROM certificates WHERE user_id = ?', [userId], (err, certificates) => {
+        db.query(cartItemsQuery, [userId], (err, cartItems) => {
+          if (err) throw err;
+
+          db.query(messagesQuery, [userId, userId], (err, messages) => {
             if (err) throw err;
 
-            // Kullanıcıya ait sepet
-            db.query('SELECT * FROM cart WHERE user_id = ?', [userId], (err, cartItems) => {
-                if (err) throw err;
-
-                // Kullanıcıya ait mesajlar
-                db.query('SELECT * FROM messages WHERE receiver_id = ?', [userId], (err, messages) => {
-                    if (err) throw err;
-                    res.render('user_dashboard', {
-                        user: req.session.user,
-                        listings,
-                        certificates,
-                        cartItems,
-                        messages
-                    });
-                });
+            // Dashboard render
+            res.render('user_dashboard', {
+              title: 'Kullanıcı Paneli',
+              user: req.session.user,
+              userListings: userListings,
+              allListings: allListings,
+              certificates: certificates,
+              cartItems: cartItems,
+              messages: messages,
             });
+          });
         });
+      });
     });
+  });
 });
 
-// Diğer yönlendirmeler...
 module.exports = router;
