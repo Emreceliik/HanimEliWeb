@@ -1,12 +1,33 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 <h1>Ödeme ve Sipariş</h1>
-<form method="POST" action="/orders/checkout">
-  <input type="text" name="shipping_address" placeholder="Adresiniz" required />
-  <select name="payment_method" required>
-    <option value="credit_card">Kredi Kartı</option>
-    <option value="paypal">PayPal</option>
-    <option value="cash_on_delivery">Kapıda Ödeme</option>
-  </select>
-  <button type="submit">Siparişi Tamamla</button>
-</form>
-<%- include('partials/footer') %>
+
+<% if (cartItems.length > 0) { %>
+  <h3>Sepetinizdeki Ürünler:</h3>
+  <ul>
+    <% let totalPrice = 0; %>
+    <% cartItems.forEach(item => { %>
+      <li>
+        <strong><%= item.title %></strong> - <%= item.quantity %> adet - <%= item.price %> TL
+        <br>
+        <strong>Toplam: <%= item.price * item.quantity %> TL</strong>
+        <% totalPrice += item.price * item.quantity; %>
+      </li>
+    <% }); %>
+  </ul>
+
+  <p><strong>Toplam Tutar: <%= totalPrice %> TL</strong></p>
+
+  <form method="POST" action="/orders/checkout">
+    <input type="text" name="shipping_address" placeholder="Adresiniz" required />
+    <select name="payment_method" required>
+      <option value="credit_card">Kredi Kartı</option>
+      <option value="paypal">PayPal</option>
+      <option value="cash_on_delivery">Kapıda Ödeme</option>
+    </select>
+    <button type="submit">Siparişi Tamamla</button>
+  </form>
+<% } else { %>
+  <p>Sepetinizde ürün bulunmamaktadır.</p>
+<% } %>
+
+<%- include('../partials/footer') %>
