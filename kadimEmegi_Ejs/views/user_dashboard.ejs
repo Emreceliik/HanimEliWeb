@@ -5,174 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <style>
-        
+        /* Genel stil */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* Genel stil */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
+        /* Başlık ve içerik düzeni */
+        h1, h2, h3 {
+            color: #e91e63; /* Güçlü bir pembe ton */
+            text-align: center;
+        }
 
-/* Başlık ve içerik düzeni */
-h1, h2, h3 {
-  color: #e91e63; /* Güçlü bir pembe ton */
-  text-align: center;
-}
+        /* Liste düzeni */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
 
-/* Liste düzeni */
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
 
-li {
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
-}
+        strong {
+            font-size: 1.1em;
+            color: #333;
+        }
 
-strong {
-  font-size: 1.1em;
-  color: #333;
-}
+        /* Sepet ve ürün resimlerinin düzeni */
+        img {
+            max-width: 200px;
+            display: block;
+            margin-top: 10px;
+        }
 
-/* Sepet ve ürün resimlerinin düzeni */
-img {
-  max-width: 200px;
-  display: block;
-  margin-top: 10px;
-}
+        /* Form ve butonlar */
+        button {
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-/* Form ve butonlar */
-button {
-  background-color: #e91e63;
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+        button:hover {
+            background-color: #d81b60;
+        }
 
-button:hover {
-  background-color: #d81b60;
-}
+        input, select, textarea {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
 
-input, select, textarea {
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
-}
+        /* Navbar stili */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #e91e63;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
 
-/* Açılır kapanır form */
-.message-form, .reply-form {
-  display: none;
-  background-color: #fff;
-  padding: 15px;
-  border: 1px solid #ddd;
-  margin-top: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+        .navbar-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
 
-.message-button, .reply-button {
-  background-color: #4caf50;
-  padding: 8px 16px;
-  margin-top: 10px;
-}
+        /* Navbar Logo */
+        .navbar-logo {
+            width: 30px;
+            height: auto;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
 
-.message-button:hover, .reply-button:hover {
-  background-color: #45a049;
-}
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+        }
 
-/* Aşağı kaydırma alanı */
-a {
-  color: #e91e63;
-  text-decoration: none;
-}
+        nav ul li {
+            display: inline-block;
+        }
 
-a:hover {
-  text-decoration: underline;
-}
+        nav ul li a {
+            text-decoration: none;
+            padding: 10px 15px;
+            background-color: #e91e63;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
 
-/* Mesaj gönder ve cevap verme için formun gizlenmesi */
-.message-form, .reply-form {
-  transition: all 0.3s ease;
-}
-/* Navbar ve içerik görünürlüğü */
-nav {
-  position: fixed; /* Navbar'ı üstte tutmak için fixed kullanıyoruz */
-  top: 0;
-  width: 100%;
-  background-color: #e91e63;
-  z-index: 1000; /* Navbar'ı sayfanın en üstünde tutmak için z-index */
-}
+        nav ul li a:hover {
+            background-color: #d81b60;
+        }
 
-nav ul {
-  list-style-type: none;
-
-  margin: 0;
-  text-align: center;
-}
-
-nav ul li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-nav ul li a {
-  text-decoration: none;
-  padding: 10px 15px;
-  background-color: #e91e63;
-  color: white;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-nav ul li a:hover {
-  background-color: #d81b60;
-}
-
-/* Sayfa içeriğinin navbar altında başlamasını sağlıyoruz */
-body {
-  margin-top: 60px; /* Navbar'ın yüksekliği kadar bir boşluk bırakıyoruz */
-}
-
-.content-section {
-  display: none;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  margin-top: 20px;
-}
-
-#all-listings-content {
-  display: block;
-}
-
-
-
-
+        /* Sayfa içeriği navbar altından başlar */
+        body {
+            margin-top: 60px; /* Navbar'ın yüksekliği kadar bir boşluk bırakıyoruz */
+        }
     </style>
 </head>
 <body>
-<h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
+    <h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
 
-<nav>
-    <ul>
-      <li><a href="#" id="all-listings-tab">Tüm İlanlar</a></li>
-      <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
-      <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
-      <li><a href="#" id="cart-tab">Sepet</a></li>
-      <li><a href="#" id="orders-tab">Siparişler</a></li>
-      <li><a href="#" id="messages-tab">Mesajlar</a></li>
-      <li><a href="#" id="profile-tab">Profil</a></li>
-      <li><a href="/auth/logout">Çıkış Yap</a></li>
-    </ul>
-  </nav>
+    <nav>
+        <div class="navbar-title">
+            Kadın Emeği
+        </div>
 
+        <ul>
+            <li><a href="#" id="all-listings-tab">Tüm İlanlar</a></li>
+            <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
+            <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
+            <li><a href="#" id="cart-tab">Sepet</a></li>
+            <li><a href="#" id="orders-tab">Siparişler</a></li>
+            <li><a href="#" id="messages-tab">Mesajlar</a></li>
+            <li><a href="#" id="profile-tab">Profil</a></li>
+            <li><a href="/auth/logout">Çıkış Yap</a></li>
+        </ul>
+    </nav>
 <!-- İçerikler -->
 <div id="all-listings-content" class="content-section" style="padding: 20px; margin: 0 auto; max-width: 1200px;">
     <h2>Tüm İlanlar</h2>
