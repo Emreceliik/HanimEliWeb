@@ -20,6 +20,17 @@ router.get('/add', (req, res) => {
   if (!req.session.user) {
     return res.redirect('/auth/login');
   }
+
+  // Eğer kullanıcı erkekse, mesaj göster ve ilan ekleme sayfasına yönlendirme
+  if (req.session.user.gender !== 'female') {
+    return res.send(
+      `<script>
+        alert('Lütfen kadınlara öncelik veriniz. Sadece kadın kullanıcılar ilan ekleyebilir.');
+        window.location.href = '/user/dashboard';
+      </script>`
+    );
+  }
+
   res.render('listings/add', { title: 'İlan Ekle', user: req.session.user });
 });
 
@@ -29,6 +40,17 @@ router.post('/add', upload.single('image'), (req, res) => {
   const userId = req.session.user.id;
   const imagePath = req.file ? '/uploads/' + req.file.filename : null;
 
+  // Eğer kullanıcı erkekse, mesaj göster ve işlem yaptırma
+  if (req.session.user.gender !== 'female') {
+    return res.send(
+      `<script>
+        alert('Lütfen kadınlara öncelik veriniz. Sadece kadın kullanıcılar ilan ekleyebilir.');
+        window.location.href = '/user/dashboard';
+      </script>`
+    );
+  }
+
+  // İlan ekleme işlemi
   db.query(
     'INSERT INTO listings (user_id, title, description, category, price, image_path) VALUES (?, ?, ?, ?, ?, ?)',
     [userId, title, description, category, price, imagePath],
