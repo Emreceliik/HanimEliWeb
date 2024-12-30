@@ -220,26 +220,30 @@ body {
     <% } %>
   </div>
   
-
   <div id="my-listings-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
     <h2>Senin İlanların</h2>
-    <% if (userListings.length > 0) { %>
-      <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
-        <% userListings.forEach(listing => { %>
-          <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
-            <strong style="font-size: 1.2rem; margin-bottom: 10px;"><%= listing.title %></strong> - <%= listing.price %> TL
-            <br>
-            <a href="/listings/<%= listing.id %>/edit" style="color: #007bff; text-decoration: none; font-weight: bold;">Düzenle</a> |
-            <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?')" style="color: #e91e63; text-decoration: none; font-weight: bold;">Sil</a>
-          </li>
-        <% }); %>
-      </ul>
-      <a href="/listings/add" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni İlan Ekle</a>
+    <% if (user.gender === 'female') { %>
+      <% if (userListings.length > 0) { %>
+        <ul style="list-style-type: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+          <% userListings.forEach(listing => { %>
+            <li style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+              <strong style="font-size: 1.2rem; margin-bottom: 10px;"><%= listing.title %></strong> - <%= listing.price %> TL
+              <br>
+              <a href="/listings/<%= listing.id %>/edit" style="color: #007bff; text-decoration: none; font-weight: bold;">Düzenle</a> |
+              <a href="/listings/<%= listing.id %>/delete" onclick="return confirm('Bu ilanı silmek istediğinize emin misiniz?')" style="color: #e91e63; text-decoration: none; font-weight: bold;">Sil</a>
+            </li>
+          <% }); %>
+        </ul>
+        <a href="/listings/add" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni İlan Ekle</a>
+      <% } else { %>
+        <p>Henüz bir ilan eklemediniz.</p>
+        <a href="/listings/add" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni İlan Ekle</a>
+      <% } %>
     <% } else { %>
-      <p>Henüz bir ilan eklemediniz.</p>
-      <a href="/listings/add" style="color: #007bff; text-decoration: none; font-weight: bold;">Yeni İlan Ekle</a>
+      <p>İlan ekleyebilmek için kadın kullanıcı olmanız gerekmektedir.</p>
     <% } %>
   </div>
+  
   
 
   <div id="certificates-content" class="content-section" style="display: none; padding: 20px; margin: 0 auto; max-width: 1200px;">
