@@ -33,15 +33,15 @@ router.get('/dashboard', (req, res) => {
       WHERE c.user_id = ?
     `;
   
-    // Kullanıcının siparişleri
-    const ordersQuery = `
-      SELECT o.*, l.title, l.price, l.image_path, (l.price * c.quantity) AS total_price
-      FROM orders o
-      JOIN cart c ON o.cart_id = c.id
-      JOIN listings l ON c.listing_id = l.id
-      WHERE o.user_id = ?
-      ORDER BY o.created_at DESC
-    `;
+ // Kullanıcının siparişleri
+const ordersQuery = `
+SELECT o.*, l.title, l.price, l.image_path, (l.price * c.quantity) AS total_price
+FROM orders o
+JOIN cart c ON o.cart_id = c.id
+JOIN listings l ON c.listing_id = l.id
+WHERE o.user_id = ?
+ORDER BY o.created_at DESC
+`;
   
     // Kullanıcı bilgilerini almak için sorgu
     const userQuery = 'SELECT * FROM users WHERE id = ?';
@@ -103,7 +103,29 @@ const sentMessagesQuery = `
       
                     db.query(ordersQuery, [userId], (err, orders) => {
                       if (err) throw err;
-      
+                    
+                      // Siparişleri order_group_id'ye göre gruplayıp tek bir sipariş içinde topluyoruz
+                      const groupedOrders = orders.reduce((acc, order) => {
+                        const groupId = order.order_group_id;
+                    
+                        // Eğer grup zaten yoksa, yeni bir grup oluşturuyoruz
+                        if (!acc[groupId]) {
+                          acc[groupId] = {
+                            orders: [],
+                            totalPrice: 0  // Grupların toplam fiyatını tutmak için
+                          };
+                        }
+                    
+                        // Order'ı gruba ekliyoruz
+                        acc[groupId].orders.push(order);
+                    
+                        // Grupların toplam fiyatını hesaplıyoruz (order.total_price doğru bir şekilde hesaplanmalı)
+                        acc[groupId].totalPrice += parseFloat(order.total_price) || 0;
+                    
+                        return acc;
+                      }, {});
+                    
+                      // groupedOrders'ı frontend'e gönderiyoruz
                       res.render('user_dashboard', {
                         title: 'Kullanıcı Paneli',
                         user: user,
@@ -113,9 +135,10 @@ const sentMessagesQuery = `
                         cartItems: cartItems,
                         receivedMessages: receivedMessages,  // Received messages
                         sentMessages: sentMessages,          // Sent messages
-                        orders: orders,  // Siparişler
+                        orders: groupedOrders,  // Siparişler
                       });
                     });
+                    
                   });
                 });
               });
