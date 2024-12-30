@@ -5,68 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
     <style>
-        /* Genel stil */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+        
 
-        /* Başlık ve içerik düzeni */
-        h1, h2, h3 {
-            color: #e91e63; /* Güçlü bir pembe ton */
-            text-align: center;
-        }
+    /* Genel stil */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
-        /* Liste düzeni */
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+/* Başlık ve içerik düzeni */
+h1, h2, h3 {
+  color: #e91e63; /* Güçlü bir pembe ton */
+  text-align: center;
+}
 
-        li {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
+/* Liste düzeni */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-        strong {
-            font-size: 1.1em;
-            color: #333;
-        }
+li {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
 
-        /* Sepet ve ürün resimlerinin düzeni */
-        img {
-            max-width: 200px;
-            display: block;
-            margin-top: 10px;
-        }
+strong {
+  font-size: 1.1em;
+  color: #333;
+}
 
-        /* Form ve butonlar */
-        button {
-            background-color: #e91e63;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+/* Sepet ve ürün resimlerinin düzeni */
+img {
+  max-width: 200px;
+  display: block;
+  margin-top: 10px;
+}
 
-        button:hover {
-            background-color: #d81b60;
-        }
+/* Form ve butonlar */
+button {
+  background-color: #e91e63;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-        input, select, textarea {
-            padding: 10px;
-            margin: 10px 0;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
+button:hover {
+  background-color: #d81b60;
+}
 
-        /* Navbar stili */
-        nav {
+input, select, textarea {
+  padding: 10px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* Açılır kapanır form */
+.message-form, .reply-form {
+  display: none;
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  margin-top: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.message-button, .reply-button {
+  background-color: #4caf50;
+  padding: 8px 16px;
+  margin-top: 10px;
+}
+
+.message-button:hover, .reply-button:hover {
+  background-color: #45a049;
+}
+
+/* Aşağı kaydırma alanı */
+a {
+  color: #e91e63;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Mesaj gönder ve cevap verme için formun gizlenmesi */
+.message-form, .reply-form {
+  transition: all 0.3s ease;
+}
+ /* Navbar stili */
+ nav {
             position: fixed;
             top: 0;
             width: 100%;
@@ -118,37 +154,48 @@
         nav ul li a:hover {
             background-color: #d81b60;
         }
+/* Sayfa içeriğinin navbar altında başlamasını sağlıyoruz */
+body {
+  margin-top: 60px; /* Navbar'ın yüksekliği kadar bir boşluk bırakıyoruz */
+}
 
-        /* Sayfa içeriği navbar altından başlar */
-        body {
-            margin-top: 60px; /* Navbar'ın yüksekliği kadar bir boşluk bırakıyoruz */
-        }
+.content-section {
+  display: none;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+#all-listings-content {
+  display: block;
+}
+
+
+
+
     </style>
 </head>
 <body>
-    <h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
+<h1>Hoş Geldiniz, <%= user.first_name %> <%= user.last_name %></h1>
 
-    <nav>
-        <div class="navbar-title">
-            Kadın Emeği
-        </div>
+<nav>
+  <div class="navbar-title">
+    Kadın Emeği
+</div>
+<ul>
+  <li><a href="#" id="all-listings-tab">Tüm İlanlar</a></li>
+  <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
+  <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
+  <li><a href="#" id="cart-tab">Sepet</a></li>
+  <li><a href="#" id="orders-tab">Siparişler</a></li>
+  <li><a href="#" id="messages-tab">Mesajlar</a></li>
+  <li><a href="#" id="profile-tab">Profil</a></li>
+  <li><a href="/auth/logout">Çıkış Yap</a></li>
+</ul>
 
-        <ul>
-            <li><a href="#" id="all-listings-tab">Tüm İlanlar</a></li>
-            <% if (user.gender === 'female') { %>
-              <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
-            <% } %>
-            
-            <% if (user.gender === 'female') { %>
-              <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
-            <% } %>
-            <li><a href="#" id="cart-tab">Sepet</a></li>
-            <li><a href="#" id="orders-tab">Siparişler</a></li>
-            <li><a href="#" id="messages-tab">Mesajlar</a></li>
-            <li><a href="#" id="profile-tab">Profil</a></li>
-            <li><a href="/auth/logout">Çıkış Yap</a></li>
-        </ul>
-    </nav>
+  </nav>
+
 <!-- İçerikler -->
 <div id="all-listings-content" class="content-section" style="padding: 20px; margin: 0 auto; max-width: 1200px;">
     <h2>Tüm İlanlar</h2>
