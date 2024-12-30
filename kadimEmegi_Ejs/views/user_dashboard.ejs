@@ -135,8 +135,13 @@
 
         <ul>
             <li><a href="#" id="all-listings-tab">Tüm İlanlar</a></li>
-            <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
-            <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
+            <% if (user.gender === 'female') { %>
+              <li><a href="#" id="my-listings-tab">Senin İlanların</a></li>
+            <% } %>
+            
+            <% if (user.gender === 'female') { %>
+              <li><a href="#" id="certificates-tab">Sertifikalar</a></li>
+            <% } %>
             <li><a href="#" id="cart-tab">Sepet</a></li>
             <li><a href="#" id="orders-tab">Siparişler</a></li>
             <li><a href="#" id="messages-tab">Mesajlar</a></li>
